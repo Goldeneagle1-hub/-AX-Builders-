@@ -1,6 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Sparkles, Type } from 'lucide-react';
+import {
+  ArrowRight,
+  Sparkles,
+  Type,
+  CloudSun,
+  Scale,
+  ShieldCheck,
+  MapPin,
+  Wind,
+  AlertTriangle,
+} from 'lucide-react';
 import { useCopilot } from '../context/CopilotContext';
 import { JEJU_DISTRICTS } from '@shared/jurisdictions';
 import { DolhareubangLogo } from '../components/layout/DolhareubangLogo';
@@ -32,13 +42,13 @@ export const HomePortalPage: React.FC = () => {
       badge: '4단계 작성',
       bg: 'bg-gradient-to-b from-[#7EB299] to-[#568E73]',
       illustration: (
-        <svg viewBox="0 0 130 100" className="w-28 h-24 mx-auto drop-shadow-sm" fill="none">
-          <rect x="20" y="24" width="58" height="44" rx="7" fill="#FFFFFF" opacity="0.96" />
-          <circle cx="38" cy="46" r="9" fill="#E86F1A" />
-          <path d="M54 40 H69 M54 50 H65" stroke="#2E2A26" strokeWidth="3.2" strokeLinecap="round" />
-          <circle cx="92" cy="36" r="12" fill="#FDE68A" />
-          <path d="M78 74 C78 58, 106 58, 106 74" fill="#2E2A26" />
-          <rect x="8" y="76" width="114" height="7" rx="3.5" fill="#2E2A26" opacity="0.22" />
+        <svg viewBox="0 0 130 90" className="w-20 h-16 mx-auto drop-shadow-xs" fill="none">
+          <rect x="20" y="18" width="58" height="42" rx="7" fill="#FFFFFF" opacity="0.96" />
+          <circle cx="38" cy="39" r="9" fill="#E86F1A" />
+          <path d="M54 34 H69 M54 44 H65" stroke="#2E2A26" strokeWidth="3.2" strokeLinecap="round" />
+          <circle cx="92" cy="30" r="11" fill="#FDE68A" />
+          <path d="M78 68 C78 52, 106 52, 106 68" fill="#2E2A26" />
+          <rect x="8" y="70" width="114" height="6" rx="3" fill="#2E2A26" opacity="0.22" />
         </svg>
       ),
     },
@@ -50,13 +60,13 @@ export const HomePortalPage: React.FC = () => {
       badge: `누적 ${savedComplaints.length}건`,
       bg: 'bg-gradient-to-b from-[#F0B81D] to-[#D69606]',
       illustration: (
-        <svg viewBox="0 0 130 100" className="w-28 h-24 mx-auto drop-shadow-sm" fill="none">
-          <circle cx="56" cy="50" r="26" fill="#FFFFFF" opacity="0.94" />
-          <path d="M56 50 L56 24 A26 26 0 0 1 80 60 Z" fill="#E86F1A" />
-          <rect x="82" y="30" width="9" height="32" rx="2.5" fill="#2E2A26" />
-          <rect x="95" y="20" width="9" height="42" rx="2.5" fill="#FFFFFF" />
-          <path d="M26 64 L46 48 L62 55 L92 26" stroke="#2E2A26" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
-          <rect x="8" y="76" width="114" height="7" rx="3.5" fill="#2E2A26" opacity="0.22" />
+        <svg viewBox="0 0 130 90" className="w-20 h-16 mx-auto drop-shadow-xs" fill="none">
+          <circle cx="56" cy="44" r="24" fill="#FFFFFF" opacity="0.94" />
+          <path d="M56 44 L56 20 A24 24 0 0 1 78 53 Z" fill="#E86F1A" />
+          <rect x="82" y="26" width="9" height="30" rx="2.5" fill="#2E2A26" />
+          <rect x="95" y="16" width="9" height="40" rx="2.5" fill="#FFFFFF" />
+          <path d="M26 58 L46 42 L62 49 L92 22" stroke="#2E2A26" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+          <rect x="8" y="70" width="114" height="6" rx="3" fill="#2E2A26" opacity="0.22" />
         </svg>
       ),
     },
@@ -68,12 +78,12 @@ export const HomePortalPage: React.FC = () => {
       badge: userSavedCount > 0 ? `내 작성 ${userSavedCount}건` : '이력 조회',
       bg: 'bg-gradient-to-b from-[#55A5CB] to-[#367FA3]',
       illustration: (
-        <svg viewBox="0 0 130 100" className="w-28 h-24 mx-auto drop-shadow-sm" fill="none">
-          <rect x="30" y="18" width="52" height="58" rx="5" fill="#FFFFFF" opacity="0.96" />
-          <path d="M40 32 H72 M40 42 H72 M40 52 H60" stroke="#2E2A26" strokeWidth="3" strokeLinecap="round" />
-          <circle cx="84" cy="58" r="15" fill="#2E2A26" />
-          <path d="M77 58 L82 63 L92 53" stroke="#FFFFFF" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
-          <rect x="8" y="78" width="114" height="7" rx="3.5" fill="#2E2A26" opacity="0.22" />
+        <svg viewBox="0 0 130 90" className="w-20 h-16 mx-auto drop-shadow-xs" fill="none">
+          <rect x="30" y="14" width="52" height="54" rx="5" fill="#FFFFFF" opacity="0.96" />
+          <path d="M40 28 H72 M40 38 H72 M40 48 H60" stroke="#2E2A26" strokeWidth="3" strokeLinecap="round" />
+          <circle cx="84" cy="52" r="14" fill="#2E2A26" />
+          <path d="M77 52 L82 57 L92 47" stroke="#FFFFFF" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+          <rect x="8" y="72" width="114" height="6" rx="3" fill="#2E2A26" opacity="0.22" />
         </svg>
       ),
     },
@@ -85,12 +95,12 @@ export const HomePortalPage: React.FC = () => {
       badge: citedOrdinanceIds.length > 0 ? `인용 ${citedOrdinanceIds.length}건` : '16대 조례',
       bg: 'bg-gradient-to-b from-[#E57D4C] to-[#C85522]',
       illustration: (
-        <svg viewBox="0 0 130 100" className="w-28 h-24 mx-auto drop-shadow-sm" fill="none">
-          <path d="M65 20 V68 M40 32 H90" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
-          <path d="M40 32 L30 52 H50 Z" fill="#FDE68A" />
-          <path d="M90 32 L80 52 H100 Z" fill="#FFFFFF" />
-          <rect x="48" y="68" width="34" height="8" rx="3" fill="#2E2A26" />
-          <rect x="8" y="78" width="114" height="7" rx="3.5" fill="#2E2A26" opacity="0.22" />
+        <svg viewBox="0 0 130 90" className="w-20 h-16 mx-auto drop-shadow-xs" fill="none">
+          <path d="M65 16 V62 M40 28 H90" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
+          <path d="M40 28 L30 48 H50 Z" fill="#FDE68A" />
+          <path d="M90 28 L80 48 H100 Z" fill="#FFFFFF" />
+          <rect x="48" y="62" width="34" height="8" rx="3" fill="#2E2A26" />
+          <rect x="8" y="72" width="114" height="6" rx="3" fill="#2E2A26" opacity="0.22" />
         </svg>
       ),
     },
@@ -106,12 +116,46 @@ export const HomePortalPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-84px)] flex flex-col justify-center">
-      {/* Full-Viewport SEMAS-Style 4-Column + Right Map Portal */}
-      <section className="rounded-2xl overflow-hidden border border-[#DFD5BC] shadow-[0_18px_45px_-15px_rgba(46,42,38,0.22)] bg-[#FFFDF9] flex-1 flex flex-col">
-        <div className="grid grid-cols-1 lg:grid-cols-12 flex-1">
-          {/* Left 8 cols: 4 Full-Height Vertical Color Infographic Menu Columns */}
-          <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="space-y-6 pb-8">
+      {/* Top-Left Brand Title Row (Clean inline title, no sticky top bar) */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+        <div className="flex items-center space-x-3">
+          <DolhareubangLogo size={46} className="shrink-0" />
+          <div>
+            <div className="flex items-center space-x-2">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-[#2E2A26] tracking-tight leading-none">
+                제주민원메이트
+              </h1>
+              <span className="text-[11px] font-mono-num text-[#786D5F] bg-[#F3EDE0] px-2 py-0.5 rounded-full border border-[#E6DEC8]">
+                Jeju Minwon Mate
+              </span>
+            </div>
+            <p className="text-xs text-[#5C5348] mt-1">
+              사진 한 장과 일상 말투로 완성하는 데이터·조례 기반 제주 맞춤형 AI 민원 해결사
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={toggleLargeFont}
+          aria-pressed={largeFont}
+          className={`min-h-[36px] px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center space-x-1.5 transition-colors cursor-pointer shrink-0 ${
+            largeFont
+              ? 'bg-[#E86F1A] border-[#E86F1A] text-white'
+              : 'bg-[#FFFDF9] border-[#E6DEC8] text-[#5C5348] hover:bg-[#F3EDE0]'
+          }`}
+        >
+          <Type className="w-3.5 h-3.5" />
+          <span>{largeFont ? '큰 글씨 켜짐' : '큰 글씨 모드'}</span>
+        </button>
+      </div>
+
+      {/* Compact 4-Column + Right Map Portal */}
+      <section className="rounded-2xl overflow-hidden border border-[#DFD5BC] shadow-[0_14px_38px_-14px_rgba(46,42,38,0.2)] bg-[#FFFDF9]">
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          {/* Left 8 cols: Compact 4-Column Vertical Color Infographic Menu */}
+          <div className="lg:col-span-8 grid grid-cols-2 lg:grid-cols-4">
             {portalColumns.map((col) => (
               <div
                 key={col.to}
@@ -124,79 +168,46 @@ export const HomePortalPage: React.FC = () => {
                     navigate(col.to);
                   }
                 }}
-                className={`${col.bg} group relative flex flex-col justify-between p-6 min-h-[260px] lg:min-h-[460px] text-center text-white transition-all border-b sm:border-b-0 sm:border-r border-white/25 last:border-r-0 cursor-pointer hover:brightness-105 focus:outline-none focus:ring-4 focus:ring-inset focus:ring-white/80`}
+                className={`${col.bg} group relative flex flex-col justify-between p-4 sm:p-5 min-h-[240px] lg:min-h-[310px] text-center text-white transition-all border-b sm:border-b-0 sm:border-r border-white/25 last:border-r-0 cursor-pointer hover:brightness-105 focus:outline-none focus:ring-4 focus:ring-inset focus:ring-white/80`}
               >
-                {/* Top Status Pill */}
                 <div className="flex justify-center">
-                  <span className="px-2.5 py-0.5 rounded-full bg-black/20 text-[11px] font-mono-num font-semibold backdrop-blur-xs">
+                  <span className="px-2.5 py-0.5 rounded-full bg-black/20 text-[10px] font-mono-num font-semibold">
                     {col.badge}
                   </span>
                 </div>
 
-                {/* Title & Subtitle */}
-                <div className="space-y-2 my-auto py-4">
-                  <h2 className="text-xl lg:text-2xl font-extrabold tracking-tight drop-shadow-xs group-hover:scale-105 transition-transform">
+                <div className="space-y-1.5 my-auto py-2">
+                  <h2 className="text-base sm:text-lg font-extrabold tracking-tight drop-shadow-xs group-hover:scale-105 transition-transform">
                     {col.title}
                   </h2>
-                  <div className="text-xs font-semibold opacity-95">{col.sub}</div>
-                  <p className="text-xs opacity-90 whitespace-pre-line leading-relaxed pt-2">
+                  <div className="text-[11px] font-semibold opacity-95">{col.sub}</div>
+                  <p className="text-[11px] opacity-90 whitespace-pre-line leading-snug pt-1 hidden sm:block">
                     {col.desc}
                   </p>
-
-                  <div className="pt-3 inline-flex items-center space-x-1 text-xs font-bold bg-white/20 group-hover:bg-white/30 px-3.5 py-1.5 rounded-full transition-colors">
+                  <div className="pt-2 inline-flex items-center space-x-1 text-[11px] font-bold bg-white/20 group-hover:bg-white/30 px-3 py-1 rounded-full transition-colors">
                     <span>바로가기</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </div>
 
-                {/* Bottom Illustration */}
-                <div className="pt-2">{col.illustration}</div>
+                <div className="pt-1">{col.illustration}</div>
               </div>
             ))}
           </div>
 
-          {/* Right 4 cols: Brand Header + Interactive Jeju Jurisdiction Map + Quick Demo Presets + Call-Center Bar */}
+          {/* Right 4 cols: Interactive Jeju Jurisdiction Map & Call-Center Bar */}
           <div className="lg:col-span-4 flex flex-col justify-between bg-gradient-to-b from-[#F7F3EA] to-[#EAE2D3] border-t lg:border-t-0 lg:border-l border-[#DFD5BC]">
-            {/* Compact Integrated Brand Strip */}
-            <div className="px-5 py-3.5 border-b border-[#DFD5BC] bg-[#FFFDF9]/75 flex items-center justify-between gap-2">
-              <div className="flex items-center space-x-2.5 min-w-0">
-                <DolhareubangLogo size={36} className="shrink-0" />
-                <div className="min-w-0">
-                  <h1 className="text-sm font-extrabold text-[#2E2A26] tracking-tight truncate">
-                    제주민원메이트
-                  </h1>
-                  <p className="text-[10px] text-[#786D5F] font-mono-num truncate">
-                    Jeju Minwon Mate
-                  </p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={toggleLargeFont}
-                aria-pressed={largeFont}
-                className={`min-h-[32px] px-2.5 py-1 rounded-lg border text-[11px] font-semibold flex items-center space-x-1 transition-colors cursor-pointer shrink-0 ${
-                  largeFont
-                    ? 'bg-[#E86F1A] border-[#E86F1A] text-white'
-                    : 'bg-white border-[#E6DEC8] text-[#5C5348] hover:bg-[#F3EDE0]'
-                }`}
-              >
-                <Type className="w-3 h-3" />
-                <span>{largeFont ? '큰 글씨' : '글자크기'}</span>
-              </button>
-            </div>
-
-            <div className="p-5 flex-1 flex flex-col items-center justify-between gap-3">
-              <div className="text-center space-y-1">
-                <h3 className="text-base font-extrabold text-[#2E2A26]">
-                  제주특별자치도 민원 관할 지도
+            <div className="p-4 flex-1 flex flex-col items-center justify-center gap-2">
+              <div className="text-center">
+                <h3 className="text-sm font-extrabold text-[#2E2A26]">
+                  제주특별자치도 관할 바로 선택
                 </h3>
-                <p className="text-xs text-[#786D5F]">
-                  행정시를 선택하면 바로 민원 작성 화면으로 이동합니다
+                <p className="text-[11px] text-[#786D5F]">
+                  행정시 클릭 시 민원 작성 화면으로 이동합니다
                 </p>
               </div>
 
-              {/* Interactive Jeju Island SVG Silhouette */}
-              <div className="relative w-full max-w-[280px] h-44 flex items-center justify-center my-auto">
+              <div className="relative w-full max-w-[240px] h-32 flex items-center justify-center">
                 <svg viewBox="0 0 220 110" className="w-full h-full drop-shadow-xs" fill="none">
                   <path
                     d="M20 62 C18 42, 52 24, 110 22 C168 20, 202 38, 200 58 C198 78, 160 92, 110 92 C58 92, 22 80, 20 62 Z"
@@ -212,11 +223,10 @@ export const HomePortalPage: React.FC = () => {
                   />
                 </svg>
 
-                {/* Jeju City Button */}
                 <button
                   type="button"
                   onClick={() => handleCitySelect('제주시')}
-                  className={`absolute top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-lg text-xs font-bold shadow-md whitespace-nowrap transition-all cursor-pointer ${
+                  className={`absolute top-2.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-md text-[11px] font-bold shadow-sm whitespace-nowrap transition-all cursor-pointer ${
                     city === '제주시'
                       ? 'bg-[#E86F1A] text-white ring-2 ring-[#E86F1A]/40 scale-105'
                       : 'bg-white text-[#2E2A26] border border-[#D5CCB6] hover:bg-[#FAF6EE]'
@@ -225,11 +235,10 @@ export const HomePortalPage: React.FC = () => {
                   제주시 (26개 읍·면·동)
                 </button>
 
-                {/* Seogwipo City Button */}
                 <button
                   type="button"
                   onClick={() => handleCitySelect('서귀포시')}
-                  className={`absolute bottom-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-lg text-xs font-bold shadow-md whitespace-nowrap transition-all cursor-pointer ${
+                  className={`absolute bottom-2.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-md text-[11px] font-bold shadow-sm whitespace-nowrap transition-all cursor-pointer ${
                     city === '서귀포시'
                       ? 'bg-[#E86F1A] text-white ring-2 ring-[#E86F1A]/40 scale-105'
                       : 'bg-white text-[#2E2A26] border border-[#D5CCB6] hover:bg-[#FAF6EE]'
@@ -238,57 +247,160 @@ export const HomePortalPage: React.FC = () => {
                   서귀포시 (17개 읍·면·동)
                 </button>
               </div>
-
-              {/* Quick Demo Preset Launchers */}
-              <div className="w-full bg-white/80 border border-[#DFD5BC] rounded-xl p-3 space-y-2">
-                <div className="text-[11px] font-bold text-[#2E2A26] flex items-center justify-center space-x-1">
-                  <Sparkles className="w-3.5 h-3.5 text-[#E86F1A]" />
-                  <span>대표 시나리오 원클릭 바로 시연</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      loadPreset('preset-daejeong-odor');
-                      navigate('/write');
-                    }}
-                    className="min-h-[38px] px-2.5 py-1.5 rounded-lg bg-[#2E2A26] hover:bg-[#1F1C18] text-white text-[11px] font-semibold cursor-pointer"
-                  >
-                    시연① 대정읍 악취
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      loadPreset('preset-ildo-complex');
-                      navigate('/write');
-                    }}
-                    className="min-h-[38px] px-2.5 py-1.5 rounded-lg bg-[#E86F1A] hover:bg-[#CF5C0E] text-white text-[11px] font-semibold cursor-pointer"
-                  >
-                    시연② 일도1동 복합
-                  </button>
-                </div>
-              </div>
             </div>
 
-            {/* Dark Contact / Call-Center Footer Bar */}
-            <div className="bg-[#2E2A26] text-white px-4 py-4 grid grid-cols-3 items-center text-center divide-x divide-white/15">
-              <div className="text-xs leading-tight text-[#D5CCB6] pr-2">
+            <div className="bg-[#2E2A26] text-white px-3.5 py-3 grid grid-cols-3 items-center text-center divide-x divide-white/15">
+              <div className="text-[10px] leading-tight text-[#D5CCB6] pr-1">
                 <div className="font-semibold text-white">평일</div>
-                <div className="font-mono-num text-[11px] mt-0.5">09:00~18:00</div>
+                <div className="font-mono-num">09:00~18:00</div>
               </div>
-              <div className="px-2">
-                <div className="text-[10px] text-[#D5CCB6]">제주도 콜센터</div>
-                <div className="text-base sm:text-lg font-extrabold text-[#F59E0B] font-mono-num tracking-tight">
+              <div className="px-1">
+                <div className="text-[9px] text-[#D5CCB6]">제주도 콜센터</div>
+                <div className="text-sm font-extrabold text-[#F59E0B] font-mono-num tracking-tight">
                   064-120
                 </div>
               </div>
-              <div className="pl-2">
-                <div className="text-[10px] text-[#D5CCB6]">정부민원안내</div>
-                <div className="text-base sm:text-lg font-extrabold text-[#F59E0B] font-mono-num tracking-tight">
+              <div className="pl-1">
+                <div className="text-[9px] text-[#D5CCB6]">정부민원안내</div>
+                <div className="text-sm font-extrabold text-[#F59E0B] font-mono-num tracking-tight">
                   110
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Below Portal: Service Overview (3 Key Features) */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm sm:text-base font-extrabold text-[#2E2A26]">
+            제주민원메이트는 어떻게 민원 해결을 돕나요?
+          </h2>
+          <span className="text-[11px] text-[#786D5F] font-mono-num hidden sm:inline">
+            소요시간 20분 → 2분 단축
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="bg-[#FFFDF9] border border-[#E6DEC8] rounded-xl p-4 space-y-2">
+            <div className="flex items-center space-x-2">
+              <span className="w-8 h-8 rounded-lg bg-[#E86F1A]/15 text-[#E86F1A] flex items-center justify-center">
+                <CloudSun className="w-4 h-4" />
+              </span>
+              <h3 className="font-bold text-sm text-[#2E2A26]">객관적 기상·시설 자동 결합</h3>
+            </div>
+            <p className="text-xs text-[#5C5348] leading-relaxed">
+              사라지기 쉬운 악취·주정차 현장 상황을 Open-Meteo 풍향·습도 데이터 및 인근 공영주차장·클린하우스·단속 CCTV 정보와 자동으로 연결합니다.
+            </p>
+          </div>
+
+          <div className="bg-[#FFFDF9] border border-[#E6DEC8] rounded-xl p-4 space-y-2">
+            <div className="flex items-center space-x-2">
+              <span className="w-8 h-8 rounded-lg bg-[#2E2A26]/10 text-[#2E2A26] flex items-center justify-center">
+                <Scale className="w-4 h-4" />
+              </span>
+              <h3 className="font-bold text-sm text-[#2E2A26]">제주 16대 조례·3계층 관할 분리</h3>
+            </div>
+            <p className="text-xs text-[#5C5348] leading-relaxed">
+              검증된 ELIS 자치법규 DB 안에서만 조례를 인용해 AI 환각을 차단하고, 도 본청·행정시·읍면동 중 정확한 소관 부서(복합 민원은 자동 분리)를 안내합니다.
+            </p>
+          </div>
+
+          <div className="bg-[#FFFDF9] border border-[#E6DEC8] rounded-xl p-4 space-y-2">
+            <div className="flex items-center space-x-2">
+              <span className="w-8 h-8 rounded-lg bg-emerald-600/15 text-emerald-700 flex items-center justify-center">
+                <ShieldCheck className="w-4 h-4" />
+              </span>
+              <h3 className="font-bold text-sm text-[#2E2A26]">순화 가드레일·국민신문고 연동</h3>
+            </div>
+            <p className="text-xs text-[#5C5348] leading-relaxed">
+              감정적·비방성 표현을 행정 표준 공문서 어조로 순화하고 민감정보를 비식별화한 뒤, 클립보드 자동 복사 후 국민신문고로 바로 연결합니다.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Below Portal: Real Case Showcase (Clickable Demo Scenarios) */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm sm:text-base font-extrabold text-[#2E2A26] flex items-center space-x-1.5">
+            <Sparkles className="w-4 h-4 text-[#E86F1A]" />
+            <span>주요 민원 해결 사례 (클릭 시 4단계 시연 바로 체험)</span>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Case 1 */}
+          <div className="bg-[#FFFDF9] border border-[#E6DEC8] rounded-xl p-5 flex flex-col justify-between space-y-4">
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold">
+                  사례 ① · 환경·악취 단일 민원
+                </span>
+                <span className="text-[11px] text-[#786D5F] flex items-center space-x-1">
+                  <MapPin className="w-3 h-3 text-[#E86F1A]" />
+                  <span>서귀포시 대정읍 하모리</span>
+                </span>
+              </div>
+
+              <h3 className="font-bold text-sm sm:text-base text-[#2E2A26] flex items-center space-x-1.5">
+                <Wind className="w-4 h-4 text-[#E86F1A] shrink-0" />
+                <span>숙박업소 인근 양돈 축사 악취 유입 및 투숙객 환불 피해</span>
+              </h3>
+
+              <p className="text-xs text-[#5C5348] leading-relaxed bg-[#FAF6EE] p-3 rounded-lg border border-[#E6DEC8]">
+                <strong>해결 과정:</strong> 원거리 사진만으로 악취를 단정하지 않고, 조회 시점 <strong>북서풍 기상 데이터 + 제주 악취방지 조례 + 서귀포시 기후환경과(환경지도팀)</strong> 현장 포집 요청 공문서를 2분 만에 완성합니다.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                loadPreset('preset-daejeong-odor');
+                navigate('/write');
+              }}
+              className="w-full min-h-[44px] px-4 py-2.5 rounded-lg bg-[#2E2A26] hover:bg-[#1F1C18] text-white text-xs font-bold flex items-center justify-center space-x-2 cursor-pointer"
+            >
+              <span>사례 ① 대정읍 악취 시연 바로 체험하기</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Case 2 */}
+          <div className="bg-[#FFFDF9] border border-[#E6DEC8] rounded-xl p-5 flex flex-col justify-between space-y-4">
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-900 text-[11px] font-bold">
+                  사례 ② · 교통 + 폐기물 복합 민원
+                </span>
+                <span className="text-[11px] text-[#786D5F] flex items-center space-x-1">
+                  <MapPin className="w-3 h-3 text-[#E86F1A]" />
+                  <span>제주시 일도1동 중앙로</span>
+                </span>
+              </div>
+
+              <h3 className="font-bold text-sm sm:text-base text-[#2E2A26] flex items-center space-x-1.5">
+                <AlertTriangle className="w-4 h-4 text-[#E86F1A] shrink-0" />
+                <span>상가 진입로 황색실선 불법 주정차 및 미규격 쓰레기 방치</span>
+              </h3>
+
+              <p className="text-xs text-[#5C5348] leading-relaxed bg-[#FAF6EE] p-3 rounded-lg border border-[#E6DEC8]">
+                <strong>해결 과정:</strong> 성격이 다른 2개 사안을 <strong>제주시 교통행정과(주정차)와 생활환경과(폐기물)로 자동 분리</strong>하고, 인근 동문공영주차장·단속 CCTV 정보를 근거로 첨부합니다.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                loadPreset('preset-ildo-complex');
+                navigate('/write');
+              }}
+              className="w-full min-h-[44px] px-4 py-2.5 rounded-lg bg-[#E86F1A] hover:bg-[#CF5C0E] text-white text-xs font-bold flex items-center justify-center space-x-2 cursor-pointer"
+            >
+              <span>사례 ② 일도1동 복합 민원 바로 체험하기</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </section>
