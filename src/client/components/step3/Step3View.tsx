@@ -3,12 +3,9 @@ import {
   GitBranch,
   ArrowRight,
   ArrowLeft,
-  ExternalLink,
   CheckSquare,
   ShieldAlert,
   Building,
-  CheckCircle,
-  HelpCircle,
 } from 'lucide-react';
 import { useCopilot } from '../../context/CopilotContext';
 
@@ -165,23 +162,17 @@ export const Step3View: React.FC = () => {
               </ul>
             </div>
 
-            {/* Channel Links for this Issue */}
+            {/* Channel Guidance (Text only in Step 3; clickable buttons appear after Step 4 completion) */}
             <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs">
-              <span className="text-slate-600 font-medium">권장 접수 채널:</span>
-              <div className="flex flex-wrap gap-2">
-                {issue.channels.map((ch, i) => (
-                  <a
-                    key={i}
-                    href={ch.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="min-h-[44px] px-3.5 py-2 rounded-lg bg-white border border-slate-300 hover:border-[#2E2A26] text-slate-800 font-semibold flex items-center space-x-1.5 transition-colors shadow-2xs"
-                  >
-                    <span>{ch.name}</span>
-                    <ExternalLink className="w-3 h-3 text-slate-400" />
-                  </a>
-                ))}
-              </div>
+              <span className="text-slate-600 font-medium">
+                권장 접수 채널:{' '}
+                <strong className="text-[#2E2A26]">
+                  {issue.channels.map((ch) => ch.name).join(' · ')}
+                </strong>
+              </span>
+              <span className="text-[11px] text-slate-500">
+                * 최종 민원서 완성 후(STEP 4) 바로 접수 버튼이 활성화됩니다.
+              </span>
             </div>
           </div>
         ))}
