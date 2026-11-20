@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #2E2A26;
+    --primary-dark: #1F1C18;
+    --primary-light: #4A433C;
+    --accent: #E86F1A;
+    --accent-hover: #CF5C0E;
+    --surface: #FFFDF9;
+    --background: #FAF6EE;
+    --border: #E6DEC8;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+    background-color: var(--background);
+    color: #2E2A26;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .font-mono-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Print styles for Step 4 complaint draft */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print,
+  nav,
+  aside,
+  header,
+  .mobile-bottom-tabs,
+  button:not(.print-allow) {
+    display: none !important;
+  }
+  .print-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 20mm !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
