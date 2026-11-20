@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Info, RefreshCw, Type } from 'lucide-react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { Info, RefreshCw, Type, FileEdit, BarChart3, Clock, Scale } from 'lucide-react';
 import { useCopilot } from '../../context/CopilotContext';
 import { DolhareubangLogo } from './DolhareubangLogo';
 
 export const Header: React.FC = () => {
   const location = useLocation();
-  const { resetAll, largeFont, toggleLargeFont } = useCopilot();
+  const { resetAll, largeFont, toggleLargeFont, savedComplaints, citedOrdinanceIds } = useCopilot();
   const [appMode, setAppMode] = useState<'demo' | 'live' | null>(null);
 
   useEffect(() => {
@@ -22,44 +22,38 @@ export const Header: React.FC = () => {
       });
   }, []);
 
-  const getPageTitle = () => {
-    switch (location.pathname) {
-      case '/':
-        return '제주민원메이트 작성';
-      case '/stats':
-        return '동네별 민원 통계 현황';
-      case '/history':
-        return '민원 작성 및 보관 이력';
-      case '/ordinances':
-        return '제주 자치법규·조례 카탈로그';
-      default:
-        return '제주민원메이트';
-    }
-  };
+  const userSavedCount = savedComplaints.filter((c) => c.source === 'user').length;
+
+  const navItems = [
+    { to: '/', label: '새 민원 작성', icon: FileEdit, badge: null },
+    { to: '/stats', label: '동네별 민원 통계', icon: BarChart3, badge: `${savedComplaints.length}건` },
+    { to: '/history', label: '민원 이력', icon: Clock, badge: userSavedCount > 0 ? `${userSavedCount}건` : null },
+    { to: '/ordinances', label: '조례·법령 검색', icon: Scale, badge: citedOrdinanceIds.length > 0 ? `인용 ${citedOrdinanceIds.length}` : null },
+  ];
 
   return (
-    <header className="no-print bg-[#FFFDF9]/85 backdrop-blur-md border-b border-[#E6DEC8] shadow-[0_4px_20px_-8px_rgba(46,42,38,0.1)] sticky top-0 z-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-        {/* Left: Mobile Brand & Page Context */}
-        <div className="flex items-center space-x-3">
-          <div className="lg:hidden flex items-center">
-            <DolhareubangLogo size={34} />
-          </div>
+    <header className="no-print bg-[#FFFDF9]/90 backdrop-blur-md shadow-[0_4px_20px_-8px_rgba(46,42,38,0.12)] sticky top-0 z-20">
+      {/* Row 1: Brand Logo & Controls */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
+        <NavLink to="/" className="flex items-center space-x-3 group">
+          <DolhareubangLogo size={40} className="shrink-0 transition-transform group-hover:scale-105" />
           <div>
-            <h2 className="text-base sm:text-lg font-bold text-[#2E2A26] leading-tight">
-              {getPageTitle()}
-            </h2>
-            <div className="flex items-center space-x-2 text-[11px] text-[#786D5F] mt-0.5">
-              <span>제주 소상공인·도민 행정지원</span>
-              <span className="text-[#D5CCB6]">•</span>
-              <span className="hidden sm:inline">3계층 관할 안내 (도청/시청/주민센터)</span>
+            <div className="flex items-center space-x-2">
+              <h1 className="text-base sm:text-lg font-extrabold text-[#2E2A26] tracking-tight leading-none">
+                제주민원메이트
+              </h1>
+              <span className="hidden sm:inline text-[11px] font-mono-num text-[#786D5F] bg-[#F3EDE0] px-2 py-0.5 rounded-full border border-[#E6DEC8]">
+                Jeju Minwon Mate
+              </span>
             </div>
+            <p className="text-[11px] text-[#786D5F] mt-0.5">
+              소상공인·도민 생활·영업 피해 AI 민원 포털
+            </p>
           </div>
-        </div>
+        </NavLink>
 
-        {/* Right: Large Font Toggle, Mode Badge & Quick Action */}
-        <div className="flex items-center space-x-2 sm:space-x-3">
-          {/* Large Font Mode Toggle */}
+        {/* Right Controls */}
+        <div className="flex items-center space-x-2 sm:space-x-2.5">
           <button
             type="button"
             onClick={toggleLargeFont}
@@ -75,7 +69,6 @@ export const Header: React.FC = () => {
             <span>{largeFont ? '큰 글씨 켜짐' : '큰 글씨'}</span>
           </button>
 
-          {/* Mode Badge */}
           <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#F3EDE0] border border-[#E6DEC8] text-xs">
             <span
               className={`w-2 h-2 rounded-full ${
@@ -88,10 +81,10 @@ export const Header: React.FC = () => {
             ></span>
             <span className="text-[#2E2A26] font-medium text-[11px]">
               {appMode === 'live'
-                ? '실연동 모드 (Live)'
+                ? '실연동 모드'
                 : appMode === 'demo'
-                ? '시연 모드 (Demo)'
-                : '모드 확인 중...'}
+                ? '시연 모드'
+                : '연결 확인중'}
             </span>
           </div>
 
@@ -102,7 +95,7 @@ export const Header: React.FC = () => {
                   resetAll();
                 }
               }}
-              className="hidden sm:flex items-center space-x-1 px-2.5 py-1 text-xs text-[#5C5348] hover:text-[#2E2A26] hover:bg-[#F3EDE0] rounded-md transition-colors cursor-pointer"
+              className="hidden sm:flex items-center space-x-1 px-2.5 py-1.5 text-xs text-[#5C5348] hover:text-[#2E2A26] hover:bg-[#F3EDE0] rounded-lg transition-colors cursor-pointer"
               title="새로 작성하기"
             >
               <RefreshCw className="w-3.5 h-3.5" />
@@ -112,11 +105,50 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Memory Notice Banner */}
-      <div className="bg-[#FDF4E7] border-t border-[#E6DEC8] px-4 py-1.5 text-center text-[11px] text-[#8C430E] flex items-center justify-center space-x-1.5">
+      {/* Row 2: Desktop Full-Width Portal Navigation Strip (SEMAS Style) */}
+      <nav
+        className="hidden lg:block bg-gradient-to-r from-[#2E2A26] via-[#3A342E] to-[#2E2A26] text-white border-t border-b border-[#1F1C18]"
+        aria-label="상단 포털 메뉴"
+      >
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          <div className="flex items-center space-x-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `px-5 py-3 text-sm font-semibold flex items-center space-x-2 border-b-3 transition-all ${
+                      isActive
+                        ? 'border-[#E86F1A] bg-white/10 text-white'
+                        : 'border-transparent text-[#E6DEC8] hover:text-white hover:bg-white/5'
+                    }`
+                  }
+                >
+                  <Icon className="w-4 h-4 text-[#F59E0B]" />
+                  <span>{item.label}</span>
+                  {item.badge && (
+                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#E86F1A] text-white font-mono-num">
+                      {item.badge}
+                    </span>
+                  )}
+                </NavLink>
+              );
+            })}
+          </div>
+
+          <div className="text-[11px] text-[#D5CCB6]">
+            공식 접수 대행 아님 · 작성 보조 전용 포털
+          </div>
+        </div>
+      </nav>
+
+      {/* Row 3: Memory Notice Banner */}
+      <div className="bg-[#FDF4E7] border-b border-[#E6DEC8] px-4 py-1 text-center text-[11px] text-[#8C430E] flex items-center justify-center space-x-1.5">
         <Info className="w-3.5 h-3.5 text-[#E86F1A] shrink-0" />
         <span>
-          임시 미디어(녹음·사진) 및 정밀 GPS는 메모리에만 임시 보관되며, 페이지 새로고침 시 초기화됩니다. 최종본은 [이력에 저장]을 눌러 보관하세요.
+          임시 미디어(녹음·사진) 및 정밀 GPS는 메모리에만 임시 보관되며 새로고침 시 초기화됩니다. 최종본은 [이력에 저장]을 눌러 보관하세요.
         </span>
       </div>
     </header>

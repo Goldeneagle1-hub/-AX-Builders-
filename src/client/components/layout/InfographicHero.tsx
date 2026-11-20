@@ -1,15 +1,128 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Check, Sparkles, AlertCircle } from 'lucide-react';
 import { useCopilot } from '../../context/CopilotContext';
+import { JEJU_DISTRICTS } from '@shared/jurisdictions';
 
 export const InfographicHero: React.FC = () => {
-  const { step, setStep, intakeResult, groundResult, draftResult } = useCopilot();
+  const {
+    step,
+    setStep,
+    setStep1Tab,
+    city,
+    setCity,
+    district,
+    setDistrict,
+    text,
+    occurredAt,
+    photoBase64,
+    followUpAnswers,
+    intakeResult,
+    setIntakeResult,
+    groundResult,
+    draftResult,
+    loadPreset,
+    markInputsDirty,
+  } = useCopilot();
 
-  const canJump = (target: number) => {
-    if (target === 1) return true;
-    if (target === 2) return !!intakeResult;
-    if (target === 3) return !!groundResult;
-    if (target === 4) return !!draftResult;
-    return false;
+  const [portalNotice, setPortalNotice] = useState<string | null>(null);
+  const [quickLoading, setQuickLoading] = useState(false);
+
+  const showNotice = (msg: string) => {
+    setPortalNotice(msg);
+    setTimeout(() => setPortalNotice(null), 3500);
+  };
+
+  const handleColumnClick = async (targetNum: number) => {
+    setPortalNotice(null);
+
+    if (targetNum === 1) {
+      setStep(1);
+      return;
+    }
+
+    if (targetNum === 2) {
+      if (intakeResult) {
+        setStep(2);
+        return;
+      }
+      if (text.trim().length >= 2) {
+        // Auto-run Step 1 intake and advance to Step 2
+        setQuickLoading(true);
+        try {
+          const res = await fetch('/api/intake', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              text,
+              city,
+              district,
+              occurredAt,
+              photoBase64: photoBase64 || undefined,
+              followUpAnswers,
+            }),
+          });
+          const json = await res.json();
+          if (json.data) {
+            setIntakeResult(json.data);
+            setStep(2);
+          } else {
+            showNotice(json.error?.message || '상황 구조화 후 이동할 수 있습니다.');
+          }
+        } catch {
+          showNotice('네트워크 오류가 발생했습니다. STEP 1에서 다시 시도해 주세요.');
+        } finally {
+          setQuickLoading(false);
+        }
+        return;
+      }
+      setStep(1);
+      setStep1Tab('direct');
+      showNotice('STEP 1에서 민원 내용을 입력하거나 시연 프리셋 ①·②를 먼저 선택해 주세요.');
+      return;
+    }
+
+    if (targetNum === 3) {
+      if (groundResult) {
+        setStep(3);
+      } else if (intakeResult) {
+        setStep(2);
+        showNotice('STEP 2에서 기상·시설·조례 근거를 먼저 매칭해 주세요.');
+      } else {
+        setStep(1);
+        showNotice('먼저 STEP 1 상황 구조화를 완료해 주세요.');
+      }
+      return;
+    }
+
+    if (targetNum === 4) {
+      if (draftResult || groundResult) {
+        setStep(4);
+      } else if (intakeResult) {
+        setStep(2);
+        showNotice('STEP 2 근거 매칭 및 STEP 3 관할 확인 후 민원서가 생성됩니다.');
+      } else {
+        setStep(1);
+        showNotice('먼저 STEP 1 상황 구조화를 완료해 주세요.');
+      }
+    }
+  };
+
+  const handleSelectCityOnMap = (targetCity: '제주시' | '서귀포시') => {
+    setCity(targetCity);
+    setDistrict(JEJU_DISTRICTS[targetCity][0]);
+    markInputsDirty();
+    setStep(1);
+    setStep1Tab('direct');
+    showNotice(`관할 행정시가 '${targetCity}'(${JEJU_DISTRICTS[targetCity][0]})로 설정되었습니다.`);
+  };
+
+  const getStepStatus = (num: number): 'active' | 'done' | 'ready' => {
+    if (step === num) return 'active';
+    if (num === 1 && intakeResult) return 'done';
+    if (num === 2 && groundResult) return 'done';
+    if (num === 3 && groundResult) return 'done';
+    if (num === 4 && draftResult) return 'done';
+    return 'ready';
   };
 
   const columns = [
@@ -82,112 +195,179 @@ export const InfographicHero: React.FC = () => {
   ];
 
   return (
-    <section className="no-print rounded-2xl overflow-hidden border border-[#DFD5BC] shadow-[0_12px_32px_-12px_rgba(46,42,38,0.18)] bg-[#FFFDF9]">
-      <div className="grid grid-cols-1 lg:grid-cols-12">
-        {/* Left 8 cols: 4 Vertical Color-Blocked Infographic Columns (SEMAS style) */}
-        <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4">
-          {columns.map((col) => {
-            const isActive = step === col.num;
-            const enabled = canJump(col.num);
-            return (
-              <button
-                key={col.num}
-                type="button"
-                disabled={!enabled}
-                onClick={() => enabled && setStep(col.num)}
-                className={`${col.bg} relative flex flex-col justify-between p-4 min-h-[195px] sm:min-h-[230px] text-center text-white transition-all border-r border-white/20 last:border-r-0 ${
-                  enabled ? 'cursor-pointer hover:brightness-105' : 'cursor-default opacity-90'
-                } ${isActive ? 'ring-4 ring-inset ring-white/80' : ''}`}
-              >
-                {/* Active Pill */}
-                {isActive && (
-                  <span className="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/30 text-[9px] font-mono-num font-bold">
-                    진행중
-                  </span>
-                )}
-
-                <div className="pt-2 space-y-1">
-                  <div className="text-[11px] font-mono-num font-bold opacity-85">
-                    STEP 0{col.num}
+    <div className="no-print space-y-2.5">
+      <section className="rounded-2xl overflow-hidden border border-[#DFD5BC] shadow-[0_12px_32px_-12px_rgba(46,42,38,0.18)] bg-[#FFFDF9]">
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          {/* Left 8 cols: Interactive 4-Column Vertical Infographic Portal */}
+          <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4">
+            {columns.map((col) => {
+              const status = getStepStatus(col.num);
+              const isActive = status === 'active';
+              const isDone = status === 'done';
+              return (
+                <div
+                  key={col.num}
+                  className={`${col.bg} relative flex flex-col justify-between p-4 min-h-[210px] sm:min-h-[250px] text-center text-white transition-all border-r border-white/20 last:border-r-0 ${
+                    isActive ? 'ring-4 ring-inset ring-white/90 brightness-105' : 'hover:brightness-105'
+                  }`}
+                >
+                  {/* Status Badge */}
+                  <div className="flex items-center justify-between text-[10px] font-mono-num font-bold">
+                    <span className="opacity-85">0{col.num}</span>
+                    {isActive ? (
+                      <span className="px-1.5 py-0.5 rounded bg-black/30 text-white">진행 중</span>
+                    ) : isDone ? (
+                      <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-700/80 text-white">
+                        <Check className="w-2.5 h-2.5" /> 완료
+                      </span>
+                    ) : (
+                      <span className="px-1.5 py-0.5 rounded bg-white/20 text-white/90">클릭 이동</span>
+                    )}
                   </div>
-                  <h3 className="text-base sm:text-lg font-extrabold tracking-tight drop-shadow-2xs">
-                    {col.title}
-                  </h3>
-                  <div className="text-[11px] font-semibold opacity-95">{col.sub}</div>
-                  <p className="text-[10px] opacity-85 whitespace-pre-line leading-snug pt-1 hidden sm:block">
-                    {col.desc}
-                  </p>
+
+                  {/* Main Clickable Area */}
+                  <button
+                    type="button"
+                    disabled={quickLoading}
+                    onClick={() => handleColumnClick(col.num)}
+                    className="flex-1 flex flex-col justify-between pt-1 cursor-pointer text-center focus:outline-none"
+                  >
+                    <div className="space-y-1">
+                      <h3 className="text-base sm:text-lg font-extrabold tracking-tight drop-shadow-2xs">
+                        {col.title}
+                      </h3>
+                      <div className="text-[11px] font-semibold opacity-95">{col.sub}</div>
+                      <p className="text-[10px] opacity-90 whitespace-pre-line leading-snug pt-0.5 hidden sm:block">
+                        {col.desc}
+                      </p>
+                    </div>
+
+                    <div className="pt-2">{col.illustration}</div>
+                  </button>
+
+                  {/* Quick Preset Triggers right inside Column 1 */}
+                  {col.num === 1 && (
+                    <div className="pt-2 border-t border-white/25 flex items-center justify-center gap-1 text-[10px]">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          loadPreset('preset-daejeong-odor');
+                          showNotice('시연 ①(서귀포시 대정읍 악취) 데이터를 불러왔습니다.');
+                        }}
+                        className="px-2 py-1 rounded bg-black/25 hover:bg-black/40 text-white font-semibold flex items-center gap-0.5 cursor-pointer"
+                        title="대정읍 악취 시연 불러오기"
+                      >
+                        <Sparkles className="w-2.5 h-2.5 text-amber-300" />
+                        <span>시연①</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          loadPreset('preset-ildo-complex');
+                          showNotice('시연 ②(제주시 일도1동 복합민원) 데이터를 불러왔습니다.');
+                        }}
+                        className="px-2 py-1 rounded bg-black/25 hover:bg-black/40 text-white font-semibold flex items-center gap-0.5 cursor-pointer"
+                        title="일도1동 복합민원 시연 불러오기"
+                      >
+                        <Sparkles className="w-2.5 h-2.5 text-amber-300" />
+                        <span>시연②</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
+              );
+            })}
+          </div>
 
-                {/* Bottom Flat Vector Illustration */}
-                <div className="pt-2">{col.illustration}</div>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Right 4 cols: Jeju Jurisdiction Map & Dark Call-Center Strip */}
-        <div className="lg:col-span-4 flex flex-col justify-between bg-gradient-to-b from-[#F5F1E8] to-[#EAE2D3] border-t lg:border-t-0 lg:border-l border-[#DFD5BC]">
-          <div className="p-4 flex-1 flex flex-col items-center justify-center relative">
-            <div className="text-center mb-2">
-              <h4 className="text-xs font-extrabold text-[#2E2A26]">
-                제주특별자치도 관할 안내
-              </h4>
-              <p className="text-[10px] text-[#786D5F]">(2개 행정시 · 43개 읍면동)</p>
-            </div>
-
-            {/* Minimal Jeju Island SVG Silhouette with City Badges */}
-            <div className="relative w-full max-w-[230px] h-28 flex items-center justify-center">
-              <svg viewBox="0 0 220 110" className="w-full h-full" fill="none">
-                {/* Jeju Island Oval Silhouette */}
-                <path
-                  d="M20 62 C18 42, 52 24, 110 22 C168 20, 202 38, 200 58 C198 78, 160 92, 110 92 C58 92, 22 80, 20 62 Z"
-                  fill="#DFD5C0"
-                  stroke="#B8AC96"
-                  strokeWidth="2"
-                />
-                {/* Mt. Hallasan ridge line */}
-                <path
-                  d="M35 56 Q110 48 185 56"
-                  stroke="#9C907B"
-                  strokeWidth="1.5"
-                  strokeDasharray="4 3"
-                />
-              </svg>
-
-              {/* Jeju City Badge */}
-              <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded bg-[#E86F1A] text-white text-[10px] font-bold shadow-xs whitespace-nowrap">
-                제주시 (26개 읍·면·동)
+          {/* Right 4 cols: Interactive Jeju Jurisdiction Map & Call-Center Strip */}
+          <div className="lg:col-span-4 flex flex-col justify-between bg-gradient-to-b from-[#F5F1E8] to-[#EAE2D3] border-t lg:border-t-0 lg:border-l border-[#DFD5BC]">
+            <div className="p-4 flex-1 flex flex-col items-center justify-center relative">
+              <div className="text-center mb-1.5">
+                <h4 className="text-xs font-extrabold text-[#2E2A26]">
+                  제주특별자치도 관할 선택
+                </h4>
+                <p className="text-[10px] text-[#786D5F]">
+                  현재 선택: <strong className="text-[#E86F1A]">{city} {district}</strong> (클릭하여 전환)
+                </p>
               </div>
 
-              {/* Seogwipo City Badge */}
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded bg-[#2E2A26] text-white text-[10px] font-bold shadow-xs whitespace-nowrap">
-                서귀포시 (17개 읍·면·동)
+              {/* Interactive Jeju Island SVG Silhouette */}
+              <div className="relative w-full max-w-[240px] h-32 flex items-center justify-center">
+                <svg viewBox="0 0 220 110" className="w-full h-full" fill="none">
+                  <path
+                    d="M20 62 C18 42, 52 24, 110 22 C168 20, 202 38, 200 58 C198 78, 160 92, 110 92 C58 92, 22 80, 20 62 Z"
+                    fill="#DFD5C0"
+                    stroke="#B8AC96"
+                    strokeWidth="2"
+                  />
+                  <path
+                    d="M35 56 Q110 48 185 56"
+                    stroke="#9C907B"
+                    strokeWidth="1.5"
+                    strokeDasharray="4 3"
+                  />
+                </svg>
+
+                {/* Interactive Jeju City Button */}
+                <button
+                  type="button"
+                  onClick={() => handleSelectCityOnMap('제주시')}
+                  className={`absolute top-2.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md text-[10px] font-bold shadow-sm whitespace-nowrap transition-all cursor-pointer ${
+                    city === '제주시'
+                      ? 'bg-[#E86F1A] text-white ring-2 ring-[#E86F1A]/40 scale-105'
+                      : 'bg-white text-[#2E2A26] border border-[#D5CCB6] hover:bg-[#FAF6EE]'
+                  }`}
+                >
+                  제주시 (26개 읍·면·동)
+                </button>
+
+                {/* Interactive Seogwipo City Button */}
+                <button
+                  type="button"
+                  onClick={() => handleSelectCityOnMap('서귀포시')}
+                  className={`absolute bottom-2.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md text-[10px] font-bold shadow-sm whitespace-nowrap transition-all cursor-pointer ${
+                    city === '서귀포시'
+                      ? 'bg-[#E86F1A] text-white ring-2 ring-[#E86F1A]/40 scale-105'
+                      : 'bg-white text-[#2E2A26] border border-[#D5CCB6] hover:bg-[#FAF6EE]'
+                  }`}
+                >
+                  서귀포시 (17개 읍·면·동)
+                </button>
+              </div>
+            </div>
+
+            {/* Dark Contact / Call-Center Footer Bar */}
+            <div className="bg-[#2E2A26] text-white px-3.5 py-2.5 grid grid-cols-3 items-center text-center divide-x divide-white/15">
+              <div className="text-[10px] leading-tight text-[#D5CCB6] pr-1">
+                <div className="font-semibold text-white">평일</div>
+                <div className="font-mono-num">09:00~18:00</div>
+              </div>
+              <div className="px-1">
+                <div className="text-[9px] text-[#D5CCB6]">제주도 콜센터</div>
+                <div className="text-sm font-extrabold text-[#F59E0B] font-mono-num tracking-tight">
+                  064-120
+                </div>
+              </div>
+              <div className="pl-1">
+                <div className="text-[9px] text-[#D5CCB6]">정부민원안내</div>
+                <div className="text-sm font-extrabold text-[#F59E0B] font-mono-num tracking-tight">
+                  110
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Dark Contact / Call-Center Footer Bar (matching reference image bottom-right) */}
-          <div className="bg-[#2E2A26] text-white px-3.5 py-2.5 grid grid-cols-3 items-center text-center divide-x divide-white/15">
-            <div className="text-[10px] leading-tight text-[#D5CCB6] pr-1">
-              <div className="font-semibold text-white">평일</div>
-              <div className="font-mono-num">09:00~18:00</div>
-            </div>
-            <div className="px-1">
-              <div className="text-[9px] text-[#D5CCB6]">제주도 콜센터</div>
-              <div className="text-sm font-extrabold text-[#F59E0B] font-mono-num tracking-tight">
-                064-120
-              </div>
-            </div>
-            <div className="pl-1">
-              <div className="text-[9px] text-[#D5CCB6]">정부민원안내</div>
-              <div className="text-sm font-extrabold text-[#F59E0B] font-mono-num tracking-tight">
-                110
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Portal Feedback Notice */}
+      {portalNotice && (
+        <div className="p-2.5 rounded-xl bg-[#FDF4E7] border border-[#E86F1A]/40 text-xs text-[#8C430E] font-medium flex items-center space-x-2">
+          <AlertCircle className="w-4 h-4 text-[#E86F1A] shrink-0" />
+          <span>{portalNotice}</span>
+        </div>
+      )}
+    </div>
   );
 };
