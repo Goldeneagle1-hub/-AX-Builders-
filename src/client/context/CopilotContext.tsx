@@ -19,6 +19,14 @@ import {
 } from '@shared/presets';
 
 const STORAGE_KEY = 'jeju_civil_copilot_v1';
+const FONT_STORAGE_KEY = 'jeju_civil_copilot_font_v1';
+const EVIDENCE_LOG_STORAGE_KEY = 'jeju_civil_copilot_logs_v1';
+
+export interface EvidenceLogItem {
+  id: string;
+  occurredAt: string;
+  note: string;
+}
 
 export interface CopilotState {
   step: number; // 1 ~ 4
@@ -125,6 +133,16 @@ export interface CopilotState {
   savedComplaints: SavedComplaint[];
   saveDraftToHistory: (title?: string) => string;
   deleteSavedComplaint: (id: string) => void;
+  importComplaints: (items: SavedComplaint[]) => number;
+
+  // Accessibility: Large Font Mode
+  largeFont: boolean;
+  toggleLargeFont: () => void;
+
+  // Repeating Evidence Log
+  evidenceLogs: EvidenceLogItem[];
+  addEvidenceLog: (occurredAt: string, note: string) => void;
+  deleteEvidenceLog: (id: string) => void;
 }
 
 const CopilotContext = createContext<CopilotState | null>(null);
@@ -179,6 +197,62 @@ export const CopilotProvider: React.FC<{ children: React.ReactNode }> = ({ child
   } | null>(null);
 
   const [editedDraft, setEditedDraft] = useState<string>('');
+  const [currentDraftId, setCurrentDraftId] = useState<string | null>(null);
+
+  // Large Font Mode (Accessibility)
+  const [largeFont, setLargeFont] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem(FONT_STORAGE_KEY) === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('large-font', largeFont);
+    try {
+      localStorage.setItem(FONT_STORAGE_KEY, String(largeFont));
+    } catch {
+      // ignore storage errors
+    }
+  }, [largeFont]);
+
+  const toggleLargeFont = () => setLargeFont((prev) => !prev);
+
+  // Repeating Evidence Log
+  const [evidenceLogs, setEvidenceLogs] = useState<EvidenceLogItem[]>(() => {
+    try {
+      const stored = localStorage.getItem(EVIDENCE_LOG_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch {
+      // ignore parse errors
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(EVIDENCE_LOG_STORAGE_KEY, JSON.stringify(evidenceLogs));
+    } catch {
+      // ignore storage errors
+    }
+  }, [evidenceLogs]);
+
+  const addEvidenceLog = (logOccurredAt: string, note: string) => {
+    const trimmed = note.trim();
+    if (!trimmed) return;
+    setEvidenceLogs((prev) => [
+      { id: `ev-${Date.now()}`, occurredAt: logOccurredAt || new Date().toISOString().slice(0, 16), note: trimmed },
+      ...prev,
+    ]);
+  };
+
+  const deleteEvidenceLog = (id: string) => {
+    setEvidenceLogs((prev) => prev.filter((item) => item.id !== id));
+  };
 
   const [needsRegen, setNeedsRegen] = useState<{
     step2: boolean;
@@ -278,6 +352,7 @@ export const CopilotProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setGroundResult(null);
     setDraftResult(null);
     setEditedDraft('');
+    setCurrentDraftId(null);
     clearDirtyFlags();
   };
 
@@ -296,6 +371,7 @@ export const CopilotProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setGroundResult(null);
     setDraftResult(null);
     setEditedDraft('');
+    setCurrentDraftId(null);
     clearDirtyFlags();
     setChatMessages([
       {
@@ -313,13 +389,14 @@ export const CopilotProvider: React.FC<{ children: React.ReactNode }> = ({ child
         ? `[복합민원] ${city} ${district} 상가 앞 불법주정차 및 폐기물 방치 정비 요청`
         : `[생활민원] ${city} ${district} ${text.slice(0, 25)} 관련 조치 요청`);
 
-    // Check if an existing entry for this draft exists to update instead of duplicate
-    const existingIndex = savedComplaints.findIndex(
-      (c) => c.source === 'user' && c.district === district && c.draftContent === (editedDraft || draftResult?.draft)
-    );
+    // Match by session draft ID so editing & re-saving the same draft updates it cleanly without duplicates
+    const existingIndex = currentDraftId
+      ? savedComplaints.findIndex((c) => c.id === currentDraftId && c.source === 'user')
+      : -1;
 
     const now = new Date().toISOString();
     const id = existingIndex >= 0 ? savedComplaints[existingIndex].id : `user-comp-${Date.now()}`;
+    setCurrentDraftId(id);
 
     const newComplaint: SavedComplaint = {
       id,
@@ -349,7 +426,30 @@ export const CopilotProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteSavedComplaint = (id: string) => {
+    if (id === currentDraftId) {
+      setCurrentDraftId(null);
+    }
     setSavedComplaints((prev) => prev.filter((c) => c.id !== id));
+  };
+
+  const importComplaints = (items: SavedComplaint[]): number => {
+    let addedCount = 0;
+    setSavedComplaints((prev) => {
+      const existingIds = new Set(prev.map((p) => p.id));
+      const newOnes: SavedComplaint[] = [];
+      for (const item of items) {
+        if (item && typeof item.id === 'string' && typeof item.title === 'string' && !existingIds.has(item.id)) {
+          existingIds.add(item.id);
+          newOnes.push({
+            ...item,
+            source: item.source === 'demo' ? 'demo' : 'user',
+          });
+          addedCount += 1;
+        }
+      }
+      return [...newOnes, ...prev];
+    });
+    return addedCount;
   };
 
   return (
@@ -400,6 +500,12 @@ export const CopilotProvider: React.FC<{ children: React.ReactNode }> = ({ child
         savedComplaints,
         saveDraftToHistory,
         deleteSavedComplaint,
+        importComplaints,
+        largeFont,
+        toggleLargeFont,
+        evidenceLogs,
+        addEvidenceLog,
+        deleteEvidenceLog,
       }}
     >
       {children}

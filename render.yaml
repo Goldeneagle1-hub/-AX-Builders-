@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: jeju-civil-copilot
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_MODE
+        value: demo
+      - key: GEMINI_TEXT_MODEL
+        value: gemini-4-hydrogen
+      - key: GEMINI_TRANSCRIBE_MODEL
+        value: gemini-3.5-transcribe

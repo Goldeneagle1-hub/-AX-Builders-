@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Info, RefreshCw } from 'lucide-react';
+import { Info, RefreshCw, Type } from 'lucide-react';
 import { useCopilot } from '../../context/CopilotContext';
 import { DolhareubangLogo } from './DolhareubangLogo';
 
 export const Header: React.FC = () => {
   const location = useLocation();
-  const { resetAll } = useCopilot();
+  const { resetAll, largeFont, toggleLargeFont } = useCopilot();
   const [appMode, setAppMode] = useState<'demo' | 'live' | null>(null);
 
   useEffect(() => {
@@ -57,8 +57,24 @@ export const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* Right: Mode Badge & Quick Action */}
-        <div className="flex items-center space-x-3">
+        {/* Right: Large Font Toggle, Mode Badge & Quick Action */}
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          {/* Large Font Mode Toggle */}
+          <button
+            type="button"
+            onClick={toggleLargeFont}
+            aria-pressed={largeFont}
+            className={`min-h-[36px] px-2.5 py-1 rounded-lg border text-[11px] font-semibold flex items-center space-x-1 transition-colors cursor-pointer ${
+              largeFont
+                ? 'bg-[#E86F1A] border-[#E86F1A] text-white'
+                : 'bg-[#FFFDF9] border-[#E6DEC8] text-[#5C5348] hover:bg-[#F3EDE0]'
+            }`}
+            title="어르신 및 소상공인용 큰 글씨 모드 전환"
+          >
+            <Type className="w-3.5 h-3.5" />
+            <span>{largeFont ? '큰 글씨 켜짐' : '큰 글씨'}</span>
+          </button>
+
           {/* Mode Badge */}
           <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#F3EDE0] border border-[#E6DEC8] text-xs">
             <span

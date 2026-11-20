@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Clock,
   Search,
@@ -9,14 +9,15 @@ import {
   X,
   MapPin,
   Calendar,
-  FileText,
-  AlertCircle,
+  Download,
+  Upload,
 } from 'lucide-react';
 import { useCopilot } from '../context/CopilotContext';
 import { SavedComplaint } from '@shared/types';
 
 export const HistoryPage: React.FC = () => {
-  const { savedComplaints, deleteSavedComplaint } = useCopilot();
+  const { savedComplaints, deleteSavedComplaint, importComplaints } = useCopilot();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedComplaint, setSelectedComplaint] = useState<SavedComplaint | null>(null);
@@ -58,32 +59,105 @@ export const HistoryPage: React.FC = () => {
     }
   };
 
+  const handleExportJson = () => {
+    const userOnly = savedComplaints.filter((c) => c.source === 'user');
+    const targetData = userOnly.length > 0 ? userOnly : savedComplaints;
+    const blob = new Blob([JSON.stringify(targetData, null, 2)], {
+      type: 'application/json;charset=utf-8',
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    link.href = url;
+    link.download = `제주민원이력_백업_${dateStr}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast(`민원 이력 ${targetData.length}건이 JSON 파일로 백업되었습니다.`);
+  };
+
+  const handleImportJson = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(String(reader.result || '[]'));
+        if (!Array.isArray(parsed)) {
+          throw new Error('올바른 민원 이력 백업 파일 형식이 아닙니다.');
+        }
+        const added = importComplaints(parsed);
+        showToast(
+          added > 0
+            ? `백업 파일에서 새로운 민원 ${added}건을 복원했습니다.`
+            : '새로 추가할 민원 항목이 없습니다 (이미 존재하는 이력).'
+        );
+      } catch (err: any) {
+        showToast(err.message || '백업 파일 복원에 실패했습니다.');
+      } finally {
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      }
+    };
+    reader.readAsText(file, 'utf-8');
+  };
+
   return (
     <div className="space-y-5 max-w-5xl mx-auto pb-12">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-20 right-4 z-50 bg-[#2E2A26] text-white px-4 py-2.5 rounded-lg shadow-lg text-xs font-semibold flex items-center space-x-2 animate-bounce">
+        <div className="fixed top-20 right-4 z-50 bg-[#2E2A26] text-white px-4 py-2.5 rounded-lg shadow-lg text-xs font-semibold flex items-center space-x-2">
           <CheckCircle className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Top Header & Search */}
-      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div className="flex items-center space-x-2">
-          <Clock className="w-5 h-5 text-[#2E2A26]" />
-          <div>
-            <h3 className="font-bold text-slate-900 text-sm">
-              민원 작성 및 보관 이력 ({filtered.length}건)
-            </h3>
-            <p className="text-[11px] text-slate-500">
-              시연 예시 및 브라우저에 저장된 내 민원 서식 보관함
-            </p>
+      {/* Top Header, Backup/Restore & Search */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs space-y-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="flex items-center space-x-2">
+            <Clock className="w-5 h-5 text-[#2E2A26]" />
+            <div>
+              <h3 className="font-bold text-slate-900 text-sm">
+                민원 작성 및 보관 이력 ({filtered.length}건)
+              </h3>
+              <p className="text-[11px] text-slate-500">
+                시연 예시 및 브라우저에 저장된 내 민원 서식 보관함
+              </p>
+            </div>
+          </div>
+
+          {/* JSON Backup & Restore Controls */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleExportJson}
+              className="min-h-[40px] px-3 py-1.5 bg-[#F3EDE0] hover:bg-[#E6DEC8] text-[#2E2A26] rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-colors cursor-pointer"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>이력 백업 (.json)</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="min-h-[40px] px-3 py-1.5 bg-white border border-[#E6DEC8] hover:bg-[#FAF6EE] text-[#2E2A26] rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-colors cursor-pointer"
+            >
+              <Upload className="w-3.5 h-3.5" />
+              <span>백업 복원</span>
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="application/json,.json"
+              onChange={handleImportJson}
+              className="hidden"
+            />
           </div>
         </div>
 
         {/* Search Input */}
-        <div className="relative w-full sm:w-72">
+        <div className="relative w-full">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
           <input
             type="text"

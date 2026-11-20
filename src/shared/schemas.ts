@@ -193,6 +193,7 @@ export const DraftRequestSchema = z.object({
   }),
   routing: RoutingInfoSchema,
   intakeRewrites: z.array(RewriteCandidateSchema).optional(),
+  followUpAnswers: z.record(z.string()).optional(),
   customEdits: z.string().optional(),
 });
 

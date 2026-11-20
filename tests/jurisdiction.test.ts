@@ -42,4 +42,18 @@ describe('Jeju 3-Tier Jurisdiction Routing & Compound Complaint Handling', () =>
     const result = resolveJurisdiction('제주시', '연동', '가로등 파손');
     expect(result.disclaimer).toContain('보조 안내');
   });
+
+  it('routes water/sewer and coastal waste accurately', () => {
+    const sewer = resolveJurisdiction('제주시', '노형동', '맨홀 오수 역류 및 상수도 누수 발생');
+    expect(sewer.issues[0].recommendedDepartment).toContain('상하수도본부');
+
+    const coastal = resolveJurisdiction('제주시', '한림읍', '해안변 폐그물 및 해안쓰레기 방치');
+    expect(coastal.issues[0].recommendedDepartment).toContain('해양수산과');
+  });
+
+  it('returns honest isNeedsReview fallback when no jurisdiction rule matches', () => {
+    const unknown = resolveJurisdiction('제주시', '아라동', '알 수 없는 일반적인 행정 질의 사항입니다');
+    expect(unknown.issues[0].isNeedsReview).toBe(true);
+    expect(unknown.issues[0].recommendedDepartment).toContain('관할 확인 필요');
+  });
 });

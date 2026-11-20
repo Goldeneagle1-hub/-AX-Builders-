@@ -234,4 +234,18 @@ describe('End-to-End API Routes Verification (Live on Port 3000)', () => {
     const json = await res.json();
     expect(json.data.transcript).toContain('대정읍');
   });
+
+  it('POST /api/transcribe rejects unsupported MIME types with 415', async () => {
+    const res = await fetch(`${BASE_URL}/api/transcribe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        audioBase64: 'AAAA',
+        mimeType: 'application/x-executable',
+      }),
+    });
+    expect(res.status).toBe(415);
+    const json = await res.json();
+    expect(json.error.code).toBe('UNSUPPORTED_MEDIA_TYPE');
+  });
 });

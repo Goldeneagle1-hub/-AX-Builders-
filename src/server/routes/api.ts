@@ -50,6 +50,39 @@ function errorResponse(
   });
 }
 
+const ALLOWED_AUDIO_MIMES = ['audio/webm', 'audio/mp4', 'audio/mpeg', 'audio/wav', 'audio/ogg'];
+const ALLOWED_IMAGE_MIMES = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
+
+function isAllowedMime(mime: string | undefined, allowedList: string[]): boolean {
+  if (!mime) return true;
+  const baseMime = mime.split(';')[0].trim().toLowerCase();
+  return allowedList.includes(baseMime);
+}
+
+// Lightweight in-memory rate limiter (120 requests per minute per IP)
+const rateBuckets = new Map<string, { count: number; resetAt: number }>();
+apiRouter.use((req, res, next) => {
+  if (req.path === '/health') return next();
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+  const now = Date.now();
+  const bucket = rateBuckets.get(ip);
+  if (!bucket || now > bucket.resetAt) {
+    rateBuckets.set(ip, { count: 1, resetAt: now + 60_000 });
+    return next();
+  }
+  bucket.count += 1;
+  if (bucket.count > 120) {
+    return errorResponse(
+      res,
+      'RATE_LIMITED',
+      '요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.',
+      429,
+      true
+    );
+  }
+  return next();
+});
+
 // 0. GET /api/health (Mode & Readiness indicator)
 apiRouter.get('/health', (_req: Request, res: Response) => {
   return successResponse(res, {
@@ -68,6 +101,14 @@ apiRouter.post('/transcribe', async (req: Request, res: Response) => {
     }
 
     const { audioBase64, mimeType } = parsed.data;
+    if (!isAllowedMime(mimeType, ALLOWED_AUDIO_MIMES)) {
+      return errorResponse(
+        res,
+        'UNSUPPORTED_MEDIA_TYPE',
+        `지원하지 않는 오디오 형식입니다 (${mimeType}).`,
+        415
+      );
+    }
     // Check payload size (e.g. 15MB limit)
     if (audioBase64.length > 20 * 1024 * 1024) {
       return errorResponse(res, 'PAYLOAD_TOO_LARGE', '오디오 파일이 너무 큽니다 (최대 15MB).', 413);
@@ -119,6 +160,15 @@ apiRouter.post('/intake', async (req: Request, res: Response) => {
     }
 
     const { text, city, district, occurredAt, photoBase64, photoMimeType, followUpAnswers } = parsed.data;
+
+    if (photoBase64 && !isAllowedMime(photoMimeType, ALLOWED_IMAGE_MIMES)) {
+      return errorResponse(
+        res,
+        'UNSUPPORTED_MEDIA_TYPE',
+        `지원하지 않는 이미지 형식입니다 (${photoMimeType}). JPG, PNG, WEBP 파일만 허용됩니다.`,
+        415
+      );
+    }
 
     if (photoBase64 && photoBase64.length > 7 * 1024 * 1024) {
       return errorResponse(res, 'PAYLOAD_TOO_LARGE', '사진 파일이 너무 큽니다 (최대 5MB).', 413);
@@ -233,7 +283,7 @@ apiRouter.post('/draft', async (req: Request, res: Response) => {
       return errorResponse(res, 'INVALID_INPUT', parsed.error.issues[0]?.message || '잘못된 입력입니다.', 400);
     }
 
-    const { sixW, district, city, grounds, routing, customEdits, intakeRewrites } = parsed.data;
+    const { sixW, district, city, grounds, routing, customEdits, intakeRewrites, followUpAnswers } = parsed.data;
 
     const { draft, rewrites } = await generateDraftContent(
       sixW,
@@ -242,7 +292,8 @@ apiRouter.post('/draft', async (req: Request, res: Response) => {
       grounds,
       routing,
       customEdits,
-      intakeRewrites
+      intakeRewrites,
+      followUpAnswers
     );
 
     const followUpGuide = {

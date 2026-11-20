@@ -298,6 +298,7 @@ export async function processIntake(
   try {
     const ai = getGenAI();
     const systemPrompt = `당신은 제주도 행정 민원 구조화 전문 AI입니다.
+제주 방언(제주어)이나 어르신·소상공인의 구어체 진술도 공무원이 이해하기 쉬운 표준 행정 용어로 정확히 보정하세요.
 민원인의 진술과 현장 사진(있는 경우)을 바탕으로 아래 기준을 반드시 준수하여 JSON으로 분석하세요:
 1. sixW (육하원칙: who, when, where, what, how, why). 정보가 부족한 항목은 반드시 "미확인 (추가 확인 필요)"라고 명시하세요.
 2. photoObservations: 사진에서 실제로 육안 확인 가능한 '물리적 사실'만 나열하세요. (경고: 사진만으로 악취 존재, 위법성 유무, 책임 주체를 절대로 단정하지 마세요!)
@@ -354,7 +355,8 @@ export async function generateDraftContent(
   },
   routing: RoutingInfo,
   customEdits?: string,
-  intakeRewrites?: RewriteCandidate[]
+  intakeRewrites?: RewriteCandidate[],
+  followUpAnswers?: Record<string, string>
 ): Promise<{
   draft: string;
   rewrites: RewriteCandidate[];
@@ -388,6 +390,18 @@ export async function generateDraftContent(
     )
     .join('\n\n');
 
+  const followUpLines = followUpAnswers
+    ? Object.values(followUpAnswers)
+        .map((v) => v.trim())
+        .filter(Boolean)
+        .map((v) => `      - ${v}`)
+        .join('\n')
+    : '';
+
+  const followUpSection = followUpLines
+    ? `\n  다. 민원인 추가 보완 진술:\n${followUpLines}`
+    : '';
+
   const draft = `【 행 정 민 원 신 청 서 】
 
 1. 민원 제목: ${title}
@@ -401,7 +415,7 @@ export async function generateDraftContent(
   가. 민원인 진술 내용:
       "${sixW.what} - 발생 경위: ${sixW.how}"
   나. 현장 및 참고 정황:
-      ${sixW.why}
+      ${sixW.why}${followUpSection}
 
 4. 피해 및 불편 사항
   - 본 사안으로 인하여 인근 소상공인의 정상적인 영업 활동 방해 및 주민·보행자의 안전한 통행권 침해 등 지속적인 생활 피해가 초래되고 있습니다.

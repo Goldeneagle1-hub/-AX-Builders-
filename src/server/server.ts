@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { CONFIG } from './config.js';
@@ -7,7 +8,11 @@ import { apiRouter } from './routes/api.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProd = process.env.NODE_ENV === 'production';
+const distIndexPath = path.resolve(process.cwd(), 'dist', 'index.html');
+const isRunningCompiledServer = __filename.includes(`${path.sep}dist${path.sep}`);
+const isProd =
+  process.env.NODE_ENV === 'production' ||
+  (isRunningCompiledServer && fs.existsSync(distIndexPath));
 
 async function startServer() {
   const app = express();

@@ -15,6 +15,8 @@ import {
   RefreshCw,
   ShieldCheck,
   Send,
+  CalendarPlus,
+  Trash2,
 } from 'lucide-react';
 import { useCopilot } from '../../context/CopilotContext';
 import { detectPII, maskPII } from '../../utils/pii';
@@ -34,21 +36,47 @@ export const Step4View: React.FC = () => {
     gps,
     photoPreviewUrl,
     photoNotice,
+    followUpAnswers,
     saveDraftToHistory,
     needsRegen,
     clearDirtyFlags,
+    evidenceLogs,
+    addEvidenceLog,
+    deleteEvidenceLog,
   } = useCopilot();
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [sinmungoNotice, setSinmungoNotice] = useState(false);
+  const [logDate, setLogDate] = useState<string>(new Date().toISOString().slice(0, 16));
+  const [logNote, setLogNote] = useState<string>('');
 
   const piiMatches = useMemo(() => detectPII(editedDraft), [editedDraft]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  const handleAddEvidenceLog = () => {
+    if (!logNote.trim()) return;
+    addEvidenceLog(logDate, logNote);
+    setLogNote('');
+    showToast('반복 피해 일지가 기록되었습니다.');
+  };
+
+  const handleAppendEvidenceLogToDraft = () => {
+    if (evidenceLogs.length === 0) return;
+    const logLines = evidenceLogs
+      .map(
+        (item, idx) =>
+          `  ${idx + 1}. [${item.occurredAt.replace('T', ' ')}] ${item.note}`
+      )
+      .join('\n');
+    const block = `\n\n[별첨: 반복 피해 발생 누적 일지 (총 ${evidenceLogs.length}회)]\n${logLines}`;
+    setEditedDraft(`${editedDraft}${block}`);
+    showToast(`누적 일지 ${evidenceLogs.length}건이 민원서 본문 하단에 삽입되었습니다.`);
   };
 
   const fetchDraft = async (forceOverwrite = false) => {
@@ -84,6 +112,7 @@ export const Step4View: React.FC = () => {
           },
           routing: groundResult.routing,
           intakeRewrites: intakeResult.rewriteCandidates,
+          followUpAnswers,
           customEdits: !forceOverwrite && editedDraft ? editedDraft : undefined,
         }),
       });
@@ -435,6 +464,80 @@ export const Step4View: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Repeating Evidence Log Card */}
+      <div className="no-print bg-[#FFFDF9] border border-[#E6DEC8] rounded-xl p-5 shadow-xs space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E6DEC8] pb-2.5">
+          <div className="flex items-center space-x-2">
+            <CalendarPlus className="w-4 h-4 text-[#E86F1A]" />
+            <h3 className="font-bold text-[#2E2A26] text-sm">
+              반복 피해 일지 누적 기록 ({evidenceLogs.length}건)
+            </h3>
+          </div>
+          {evidenceLogs.length > 0 && (
+            <button
+              type="button"
+              onClick={handleAppendEvidenceLogToDraft}
+              className="min-h-[36px] px-3 py-1.5 bg-[#E86F1A] hover:bg-[#CF5C0E] text-white rounded-lg text-xs font-bold cursor-pointer"
+            >
+              민원서 본문에 일지 별첨 삽입
+            </button>
+          )}
+        </div>
+
+        <p className="text-xs text-[#5C5348]">
+          단순 계도에 그치지 않도록 반복 발생 일시와 피해 정황을 누적 기록하고, 재민원 시 민원서 본문에 한 번에 삽입할 수 있습니다.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
+          <input
+            type="datetime-local"
+            value={logDate}
+            onChange={(e) => setLogDate(e.target.value)}
+            className="sm:col-span-4 min-h-[44px] text-base sm:text-xs px-3 py-2 bg-white border border-[#E6DEC8] rounded-lg font-mono-num"
+          />
+          <input
+            type="text"
+            value={logNote}
+            onChange={(e) => setLogNote(e.target.value)}
+            placeholder="예: 07:40 북서풍 유입, 투숙객 창문 개방 불가 항의"
+            className="sm:col-span-6 min-h-[44px] text-base sm:text-xs px-3 py-2 bg-white border border-[#E6DEC8] rounded-lg"
+          />
+          <button
+            type="button"
+            onClick={handleAddEvidenceLog}
+            className="sm:col-span-2 min-h-[44px] px-3 py-2 bg-[#2E2A26] hover:bg-[#1F1C18] text-white rounded-lg text-xs font-bold cursor-pointer"
+          >
+            일지 추가
+          </button>
+        </div>
+
+        {evidenceLogs.length > 0 && (
+          <ul className="space-y-1.5 pt-1">
+            {evidenceLogs.map((log) => (
+              <li
+                key={log.id}
+                className="flex items-center justify-between gap-2 p-2.5 bg-white border border-[#E6DEC8] rounded-lg text-xs"
+              >
+                <div className="min-w-0">
+                  <span className="font-mono-num text-[11px] font-semibold text-[#E86F1A] mr-2">
+                    {log.occurredAt.replace('T', ' ')}
+                  </span>
+                  <span className="text-[#2E2A26]">{log.note}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => deleteEvidenceLog(log.id)}
+                  className="p-1 text-slate-400 hover:text-red-600 cursor-pointer shrink-0"
+                  title="일지 삭제"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {/* Follow-up Response Guide */}
       {guide && (
