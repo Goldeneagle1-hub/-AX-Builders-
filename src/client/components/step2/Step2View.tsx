@@ -19,6 +19,7 @@ export const Step2View: React.FC = () => {
     city,
     district,
     gps,
+    occurredAt,
     citedOrdinanceIds,
     intakeResult,
     groundResult,
@@ -47,6 +48,7 @@ export const Step2View: React.FC = () => {
           gps: gps || undefined,
           citedOrdinanceIds,
           category: undefined,
+          occurredAt,
         }),
       });
 
@@ -135,21 +137,32 @@ export const Step2View: React.FC = () => {
             </div>
           </div>
           {weather && (
-            <span
-              className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
-                weather.status === 'verified'
-                  ? 'bg-emerald-100 text-emerald-800'
+            <div className="flex items-center space-x-1.5">
+              {weather.queryMode === 'historical' ? (
+                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#E86F1A]/15 text-[#C9580C]">
+                  사후 작성 (발생 당시 시각 매칭)
+                </span>
+              ) : (
+                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-100 text-sky-800">
+                  즉시 작성 (실시간 기준)
+                </span>
+              )}
+              <span
+                className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
+                  weather.status === 'verified'
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : weather.status === 'demo'
+                    ? 'bg-blue-100 text-blue-800'
+                    : 'bg-slate-100 text-slate-700'
+                }`}
+              >
+                {weather.status === 'verified'
+                  ? '실연동'
                   : weather.status === 'demo'
-                  ? 'bg-blue-100 text-blue-800'
-                  : 'bg-slate-100 text-slate-700'
-              }`}
-            >
-              {weather.status === 'verified'
-                ? '실시간 연동'
-                : weather.status === 'demo'
-                ? '시연 모델값'
-                : '조회 불가'}
-            </span>
+                  ? '시연 모델값'
+                  : '조회 불가'}
+              </span>
+            </div>
           )}
         </div>
 
@@ -206,8 +219,10 @@ export const Step2View: React.FC = () => {
                   <span className="font-semibold text-slate-700">출처:</span> {weather.source}
                 </span>
               </div>
-              <div className="text-slate-400 italic mt-1">
-                * 발생 당시 현장 정밀 관측값이 아닌 조회 시점의 기상 수치 예보 모델 기반 참고 데이터입니다.
+              <div className="text-slate-500 italic mt-1">
+                {weather.queryMode === 'historical'
+                  ? `* 사후 작성 모드: 입력하신 발생 일시(${weather.matchedTargetTime || weather.baseTime}) 기준 Open-Meteo 시간별 모델 참고 데이터입니다.`
+                  : '* 즉시 작성 모드: 조회 시점의 기상 수치 예보 모델 기반 참고 데이터입니다.'}
               </div>
             </div>
           </div>

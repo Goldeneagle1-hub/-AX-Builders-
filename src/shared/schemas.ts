@@ -88,6 +88,7 @@ export const GroundAndRouteRequestSchema = z.object({
   }).optional(),
   citedOrdinanceIds: z.array(z.string()).optional(),
   category: z.string().optional(),
+  occurredAt: z.string().optional(),
 });
 
 export const WeatherInfoSchema = z.object({
@@ -109,6 +110,8 @@ export const WeatherInfoSchema = z.object({
   baseTime: z.string(),
   queriedAt: z.string(),
   source: z.string(),
+  queryMode: z.enum(['realtime', 'historical']).optional(),
+  matchedTargetTime: z.string().optional(),
 });
 
 export const FacilityMatchSchema = z.object({

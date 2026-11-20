@@ -40,6 +40,8 @@ export interface WeatherInfo {
   baseTime: string; // ISO
   queriedAt: string; // ISO
   source: string;
+  queryMode?: 'realtime' | 'historical';
+  matchedTargetTime?: string;
 }
 
 export interface FacilityMatch {

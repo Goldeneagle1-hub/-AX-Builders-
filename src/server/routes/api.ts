@@ -198,11 +198,11 @@ apiRouter.post('/ground-and-route', async (req: Request, res: Response) => {
       return errorResponse(res, 'INVALID_INPUT', parsed.error.issues[0]?.message || '잘못된 입력입니다.', 400);
     }
 
-    const { sixW, district, city, gps, citedOrdinanceIds, category } = parsed.data;
+    const { sixW, district, city, gps, citedOrdinanceIds, category, occurredAt } = parsed.data;
     const warnings: string[] = [];
 
-    // 1. Weather
-    const weather = await fetchWeather(gps, city);
+    // 1. Weather (supports both realtime and historical post-incident matching via occurredAt)
+    const weather = await fetchWeather(gps, city, occurredAt);
     if (weather.status === 'unavailable') {
       warnings.push('기상 데이터 조회에 실패하여 참고 기상 정보가 누락되었습니다.');
     }
