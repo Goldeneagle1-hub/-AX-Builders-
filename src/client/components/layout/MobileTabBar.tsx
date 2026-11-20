@@ -36,7 +36,7 @@ export const MobileTabBar: React.FC = () => {
 
   return (
     <nav
-      className="no-print lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-[#FFFDF9] border-t border-[#E6DEC8] shadow-lg mobile-bottom-tabs pb-[env(safe-area-inset-bottom)]"
+      className="no-print lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-[#FFFDF9]/90 backdrop-blur-md border-t border-[#E6DEC8] shadow-[0_-6px_20px_-6px_rgba(46,42,38,0.12)] mobile-bottom-tabs pb-[env(safe-area-inset-bottom)]"
       aria-label="하단 네비게이션 탭"
     >
       <div className="grid grid-cols-4 h-14">

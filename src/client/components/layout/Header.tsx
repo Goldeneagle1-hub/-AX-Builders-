@@ -38,7 +38,7 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="no-print bg-[#FFFDF9] border-b border-[#E6DEC8] sticky top-0 z-20">
+    <header className="no-print bg-[#FFFDF9]/85 backdrop-blur-md border-b border-[#E6DEC8] shadow-[0_4px_20px_-8px_rgba(46,42,38,0.1)] sticky top-0 z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
         {/* Left: Mobile Brand & Page Context */}
         <div className="flex items-center space-x-3">

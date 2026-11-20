@@ -85,18 +85,18 @@ export const Stepper: React.FC = () => {
               onClick={() => setStep(s.number)}
               className={`flex items-center p-2.5 rounded-lg text-left transition-all relative ${
                 isCurrent
-                  ? 'bg-[#2E2A26] text-white shadow-xs'
+                  ? 'bg-gradient-to-b from-[#3F3933] to-[#24201C] text-white shadow-[0_6px_14px_-4px_rgba(46,42,38,0.45),inset_0_1px_0_rgba(255,255,255,0.2)]'
                   : isAvailable
-                  ? 'bg-[#FAF6EE] hover:bg-[#F3EDE0] text-[#2E2A26]'
+                  ? 'bg-[#FAF6EE] hover:bg-[#F3EDE0] text-[#2E2A26] shadow-2xs'
                   : 'bg-[#FAF6EE]/60 text-[#9A8F80] cursor-not-allowed'
               }`}
             >
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-mono-num shrink-0 mr-3 ${
                   isCurrent
-                    ? 'bg-[#E86F1A] text-white'
+                    ? 'bg-gradient-to-b from-[#F27E2C] to-[#DC6310] text-white shadow-[0_2px_6px_rgba(232,111,26,0.5),inset_0_1px_0_rgba(255,255,255,0.35)]'
                     : isCompleted
-                    ? 'bg-emerald-600 text-white'
+                    ? 'bg-emerald-600 text-white shadow-2xs'
                     : 'bg-[#E6DEC8] text-[#5C5348]'
                 }`}
               >

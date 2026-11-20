@@ -19,6 +19,10 @@
   body {
     font-family: 'Plus Jakarta Sans', 'Noto Sans KR', system-ui, -apple-system, sans-serif;
     background-color: var(--background);
+    background-image:
+      radial-gradient(at 15% 10%, rgba(232, 111, 26, 0.06) 0px, transparent 45%),
+      radial-gradient(at 88% 85%, rgba(214, 198, 168, 0.22) 0px, transparent 50%);
+    background-attachment: fixed;
     color: #2E2A26;
     -webkit-font-smoothing: antialiased;
   }
@@ -26,6 +30,62 @@
   .font-mono-num {
     font-family: 'JetBrains Mono', monospace;
     font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Polished 3D depth & subtle glossy finish on cards and primary controls */
+@layer utilities {
+  .bg-white.rounded-xl,
+  .bg-\[\#FFFDF9\].rounded-xl {
+    box-shadow:
+      0 6px 20px -6px rgba(46, 42, 38, 0.08),
+      0 2px 6px -1px rgba(46, 42, 38, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  /* Glossy Tangerine CTA buttons */
+  button.bg-\[\#E86F1A\],
+  a.bg-\[\#E86F1A\] {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(0, 0, 0, 0.06) 100%);
+    box-shadow:
+      0 4px 12px -2px rgba(232, 111, 26, 0.38),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  }
+
+  button.bg-\[\#E86F1A\]:hover:not(:disabled),
+  a.bg-\[\#E86F1A\]:hover {
+    box-shadow:
+      0 6px 16px -2px rgba(232, 111, 26, 0.48),
+      inset 0 1px 0 rgba(255, 255, 255, 0.42);
+    transform: translateY(-0.5px);
+  }
+
+  button.bg-\[\#E86F1A\]:active:not(:disabled) {
+    transform: translateY(0.5px);
+    box-shadow: 0 2px 6px -1px rgba(232, 111, 26, 0.32);
+  }
+
+  /* Glossy Basalt Primary buttons */
+  button.bg-\[\#2E2A26\],
+  a.bg-\[\#2E2A26\] {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0.14) 100%);
+    box-shadow:
+      0 4px 12px -2px rgba(46, 42, 38, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  button.bg-\[\#2E2A26\]:hover:not(:disabled),
+  a.bg-\[\#2E2A26\]:hover {
+    box-shadow:
+      0 6px 16px -2px rgba(46, 42, 38, 0.36),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    transform: translateY(-0.5px);
+  }
+
+  button.bg-\[\#2E2A26\]:active:not(:disabled) {
+    transform: translateY(0.5px);
   }
 }
 
@@ -37,6 +97,7 @@
 
   body {
     background-color: #ffffff !important;
+    background-image: none !important;
     color: #000000 !important;
   }
   .no-print,

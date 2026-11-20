@@ -36,11 +36,11 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="no-print hidden lg:flex flex-col w-64 bg-[#F3EDE0] text-[#2E2A26] shrink-0 min-h-screen border-r border-[#E6DEC8] select-none">
-      {/* Brand Header with Dolhareubang Sketch Logo */}
-      <div className="p-5 border-b border-[#E6DEC8] bg-[#FAF6EE]/70">
+    <aside className="no-print hidden lg:flex flex-col w-64 bg-gradient-to-b from-[#F7F2E7] to-[#ECE3D1] text-[#2E2A26] shrink-0 min-h-screen border-r border-[#DFD5BC] shadow-[4px_0_24px_-12px_rgba(46,42,38,0.12)] select-none">
+      {/* Brand Header with Glossy Dolhareubang Emblem Logo */}
+      <div className="p-5 border-b border-[#E2D8C0] bg-gradient-to-b from-[#FFFDF9]/90 to-[#F7F1E5]/70 backdrop-blur-sm">
         <div className="flex items-center space-x-3">
-          <DolhareubangLogo size={44} className="shrink-0 drop-shadow-xs" />
+          <DolhareubangLogo size={46} className="shrink-0" />
           <div>
             <h1 className="font-bold text-base tracking-tight leading-none text-[#2E2A26]">
               제주민원메이트
@@ -61,10 +61,10 @@ export const Sidebar: React.FC = () => {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                `flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   isActive
-                    ? 'bg-[#E86F1A] text-white font-semibold shadow-xs'
-                    : 'text-[#3A332C] hover:bg-[#E6DEC8]/60 hover:text-[#2E2A26]'
+                    ? 'bg-gradient-to-b from-[#F27E2C] to-[#DF6410] text-white font-semibold shadow-[0_4px_12px_-2px_rgba(232,111,26,0.45),inset_0_1px_0_rgba(255,255,255,0.35)]'
+                    : 'text-[#3A332C] hover:bg-white/60 hover:text-[#2E2A26] hover:shadow-2xs'
                 }`
               }
             >
