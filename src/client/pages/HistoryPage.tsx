@@ -132,7 +132,7 @@ export const HistoryPage: React.FC = () => {
             <button
               type="button"
               onClick={handleExportJson}
-              className="min-h-[40px] px-3 py-1.5 bg-[#F3EDE0] hover:bg-[#E6DEC8] text-[#2E2A26] rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-colors cursor-pointer"
+              className="min-h-[40px] px-3 py-1.5 bg-[#F1F5F9] hover:bg-[#E2E8F0] text-[#2E2A26] rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-colors cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               <span>이력 백업 (.json)</span>
@@ -141,7 +141,7 @@ export const HistoryPage: React.FC = () => {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="min-h-[40px] px-3 py-1.5 bg-white border border-[#E6DEC8] hover:bg-[#FAF6EE] text-[#2E2A26] rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-colors cursor-pointer"
+              className="min-h-[40px] px-3 py-1.5 bg-white border border-[#E2E8F0] hover:bg-[#F8FAFC] text-[#2E2A26] rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition-colors cursor-pointer"
             >
               <Upload className="w-3.5 h-3.5" />
               <span>백업 복원</span>

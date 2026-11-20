@@ -38,14 +38,14 @@ export const Sidebar: React.FC = () => {
   return (
     <aside className="no-print hidden lg:flex flex-col w-64 bg-gradient-to-b from-[#F7F2E7] to-[#ECE3D1] text-[#2E2A26] shrink-0 min-h-screen border-r border-[#DFD5BC] shadow-[4px_0_24px_-12px_rgba(46,42,38,0.12)] select-none">
       {/* Brand Header with Glossy Dolhareubang Emblem Logo */}
-      <div className="p-5 border-b border-[#E2D8C0] bg-gradient-to-b from-[#FFFDF9]/90 to-[#F7F1E5]/70 backdrop-blur-sm">
+      <div className="p-5 border-b border-[#E2D8C0] bg-gradient-to-b from-[#FFFFFF]/90 to-[#F7F1E5]/70 backdrop-blur-sm">
         <div className="flex items-center space-x-3">
           <DolhareubangLogo size={46} className="shrink-0" />
           <div>
             <h1 className="font-bold text-base tracking-tight leading-none text-[#2E2A26]">
               제주민원메이트
             </h1>
-            <p className="text-[11px] text-[#786D5F] mt-1 font-mono-num">
+            <p className="text-[11px] text-[#475569] mt-1 font-mono-num">
               Jeju Minwon Mate
             </p>
           </div>
@@ -73,7 +73,7 @@ export const Sidebar: React.FC = () => {
                   <div className="flex items-center space-x-3">
                     <Icon
                       className={`w-4 h-4 ${
-                        isActive ? 'text-white' : 'text-[#786D5F]'
+                        isActive ? 'text-white' : 'text-[#475569]'
                       }`}
                     />
                     <span>{item.label}</span>
@@ -83,7 +83,7 @@ export const Sidebar: React.FC = () => {
                       className={`text-[11px] px-2 py-0.5 rounded-full font-mono-num font-medium ${
                         isActive
                           ? 'bg-white/25 text-white'
-                          : 'bg-[#E6DEC8] text-[#2E2A26]'
+                          : 'bg-[#E2E8F0] text-[#2E2A26]'
                       }`}
                     >
                       {item.badge}
@@ -97,18 +97,18 @@ export const Sidebar: React.FC = () => {
       </nav>
 
       {/* Guide Note Box */}
-      <div className="p-4 m-3 rounded-lg bg-[#FFFDF9] border border-[#E6DEC8] text-xs text-[#5C5348] space-y-2">
+      <div className="p-4 m-3 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-xs text-[#334155] space-y-2">
         <div className="flex items-center space-x-1.5 text-[#C9580C] font-semibold text-[11px]">
           <ShieldAlert className="w-3.5 h-3.5" />
           <span>공식 접수 대행 아님</span>
         </div>
-        <p className="text-[11px] leading-relaxed text-[#5C5348]">
+        <p className="text-[11px] leading-relaxed text-[#334155]">
           본 도구는 소상공인과 도민의 민원 작성·정리를 보조합니다. 공식 접수는 국민신문고 또는 안전신문고를 통해 직접 제출됩니다.
         </p>
       </div>
 
       {/* Footer Info */}
-      <div className="p-3 border-t border-[#E6DEC8] text-[11px] text-[#786D5F] flex items-center justify-between font-mono-num px-4">
+      <div className="p-3 border-t border-[#E2E8F0] text-[11px] text-[#475569] flex items-center justify-between font-mono-num px-4">
         <span>제주 AX Builders</span>
         <span className="inline-flex items-center space-x-1 text-emerald-700 font-semibold">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>

@@ -196,7 +196,7 @@ export const InfographicHero: React.FC = () => {
 
   return (
     <div className="no-print space-y-2.5">
-      <section className="rounded-2xl overflow-hidden border border-[#DFD5BC] shadow-[0_12px_32px_-12px_rgba(46,42,38,0.18)] bg-[#FFFDF9]">
+      <section className="rounded-2xl overflow-hidden border border-[#DFD5BC] shadow-[0_12px_32px_-12px_rgba(46,42,38,0.18)] bg-[#FFFFFF]">
         <div className="grid grid-cols-1 lg:grid-cols-12">
           {/* Left 8 cols: Interactive 4-Column Vertical Infographic Portal */}
           <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4">
@@ -288,7 +288,7 @@ export const InfographicHero: React.FC = () => {
                 <h4 className="text-xs font-extrabold text-[#2E2A26]">
                   제주특별자치도 관할 선택
                 </h4>
-                <p className="text-[10px] text-[#786D5F]">
+                <p className="text-[10px] text-[#475569]">
                   현재 선택: <strong className="text-[#E86F1A]">{city} {district}</strong> (클릭하여 전환)
                 </p>
               </div>
@@ -317,7 +317,7 @@ export const InfographicHero: React.FC = () => {
                   className={`absolute top-2.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md text-[10px] font-bold shadow-sm whitespace-nowrap transition-all cursor-pointer ${
                     city === '제주시'
                       ? 'bg-[#E86F1A] text-white ring-2 ring-[#E86F1A]/40 scale-105'
-                      : 'bg-white text-[#2E2A26] border border-[#D5CCB6] hover:bg-[#FAF6EE]'
+                      : 'bg-white text-[#2E2A26] border border-[#D5CCB6] hover:bg-[#F8FAFC]'
                   }`}
                 >
                   제주시 (26개 읍·면·동)
@@ -330,7 +330,7 @@ export const InfographicHero: React.FC = () => {
                   className={`absolute bottom-2.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-md text-[10px] font-bold shadow-sm whitespace-nowrap transition-all cursor-pointer ${
                     city === '서귀포시'
                       ? 'bg-[#E86F1A] text-white ring-2 ring-[#E86F1A]/40 scale-105'
-                      : 'bg-white text-[#2E2A26] border border-[#D5CCB6] hover:bg-[#FAF6EE]'
+                      : 'bg-white text-[#2E2A26] border border-[#D5CCB6] hover:bg-[#F8FAFC]'
                   }`}
                 >
                   서귀포시 (17개 읍·면·동)

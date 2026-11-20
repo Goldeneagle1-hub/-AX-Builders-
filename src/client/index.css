@@ -2,14 +2,14 @@
 
 @layer base {
   :root {
-    --primary: #2E2A26;
-    --primary-dark: #1F1C18;
-    --primary-light: #4A433C;
+    --primary: #1E293B;
+    --primary-dark: #0F172A;
+    --primary-light: #334155;
     --accent: #E86F1A;
     --accent-hover: #CF5C0E;
-    --surface: #FFFDF9;
-    --background: #FAF6EE;
-    --border: #E6DEC8;
+    --surface: #FFFFFF;
+    --background: #F8FAFC;
+    --border: #E2E8F0;
   }
 
   html.large-font {
@@ -20,10 +20,10 @@
     font-family: 'Plus Jakarta Sans', 'Noto Sans KR', system-ui, -apple-system, sans-serif;
     background-color: var(--background);
     background-image:
-      radial-gradient(at 15% 10%, rgba(232, 111, 26, 0.06) 0px, transparent 45%),
-      radial-gradient(at 88% 85%, rgba(214, 198, 168, 0.22) 0px, transparent 50%);
+      radial-gradient(at 15% 10%, rgba(232, 111, 26, 0.04) 0px, transparent 45%),
+      radial-gradient(at 88% 85%, rgba(226, 232, 240, 0.45) 0px, transparent 50%);
     background-attachment: fixed;
-    color: #2E2A26;
+    color: #0F172A;
     -webkit-font-smoothing: antialiased;
   }
 

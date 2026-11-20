@@ -487,7 +487,7 @@ export const DirectInput: React.FC = () => {
             ].map((item) => (
               <div
                 key={item.tag}
-                className="p-3 rounded-xl bg-gradient-to-b from-[#FFFDF9] to-[#FAF4E8] border border-[#E6DEC8] shadow-[0_2px_8px_-2px_rgba(46,42,38,0.05),inset_0_1px_0_rgba(255,255,255,0.9)] space-y-1"
+                className="p-3 rounded-xl bg-gradient-to-b from-[#FFFFFF] to-[#F8FAFC] border border-[#E2E8F0] shadow-[0_2px_8px_-2px_rgba(46,42,38,0.05),inset_0_1px_0_rgba(255,255,255,0.9)] space-y-1"
               >
                 <div className="flex items-center justify-between">
                   <span className="font-mono-num text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E86F1A]/15 text-[#C9580C]">
@@ -495,7 +495,7 @@ export const DirectInput: React.FC = () => {
                   </span>
                   <span className="font-bold text-[#2E2A26] text-[11px]">{item.label}</span>
                 </div>
-                <p className="text-[#5C5348] text-xs leading-relaxed pt-0.5">{item.val}</p>
+                <p className="text-[#334155] text-xs leading-relaxed pt-0.5">{item.val}</p>
               </div>
             ))}
           </div>

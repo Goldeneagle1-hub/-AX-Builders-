@@ -234,7 +234,7 @@ export const StatsPage: React.FC = () => {
                             ? 'bg-[#E86F1A] text-white'
                             : idx === 1
                             ? 'bg-[#2E2A26] text-white'
-                            : 'bg-[#E6DEC8] text-[#5C5348]'
+                            : 'bg-[#E2E8F0] text-[#334155]'
                         }`}
                       >
                         {idx + 1}
@@ -253,7 +253,7 @@ export const StatsPage: React.FC = () => {
                       {info.count}건 ({mainCats})
                     </span>
                   </div>
-                  <div className="w-full bg-[#F3EDE0] rounded-full h-3 overflow-hidden shadow-inner">
+                  <div className="w-full bg-[#F1F5F9] rounded-full h-3 overflow-hidden shadow-inner">
                     <div
                       className={`h-3 rounded-full transition-all duration-500 ${
                         isRepeatHotspot
@@ -287,7 +287,7 @@ export const StatsPage: React.FC = () => {
             {/* SVG Donut Chart */}
             <div className="relative w-36 h-36 shrink-0 flex items-center justify-center">
               <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-                <circle cx="50" cy="50" r="38" fill="none" stroke="#F3EDE0" strokeWidth="14" />
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#F1F5F9" strokeWidth="14" />
                 {(() => {
                   const palette = ['#E86F1A', '#2E2A26', '#C98A2C', '#5B7A5E', '#8C7A6B'];
                   const circumference = 2 * Math.PI * 38;
@@ -314,7 +314,7 @@ export const StatsPage: React.FC = () => {
                 })()}
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <span className="text-[10px] text-[#786D5F] font-semibold">총 누적</span>
+                <span className="text-[10px] text-[#475569] font-semibold">총 누적</span>
                 <span className="text-lg font-extrabold text-[#2E2A26] font-mono-num leading-none">
                   {totalCount}건
                 </span>
@@ -337,7 +337,7 @@ export const StatsPage: React.FC = () => {
                         {count}건 ({pct}%)
                       </span>
                     </div>
-                    <div className="w-full bg-[#F3EDE0] rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-[#F1F5F9] rounded-full h-2 overflow-hidden">
                       <div
                         className={`${palette[i % palette.length]} h-2 rounded-full transition-all duration-500`}
                         style={{ width: `${Math.max(pct, 10)}%` }}
@@ -390,14 +390,14 @@ export const StatsPage: React.FC = () => {
             })}
           </div>
 
-          <div className="p-3.5 bg-[#FAF6EE] border border-[#E6DEC8] rounded-xl text-xs space-y-1.5 text-[#2E2A26]">
+          <div className="p-3.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-xs space-y-1.5 text-[#2E2A26]">
             <div className="font-bold text-[#C9580C] text-[11px]">
               기상·시간대 교차 분석 인사이트
             </div>
-            <p className="text-[11px] leading-relaxed text-[#5C5348]">
+            <p className="text-[11px] leading-relaxed text-[#334155]">
               • 전체 악취·환경 민원 중 <strong className="text-[#2E2A26] font-mono-num">{timeStats.odorMorningNight}건</strong>이 대기가 정체되는 이른 아침(06~10시) 또는 야간(18시 이후) 시간대에 집중되었습니다.
             </p>
-            <p className="text-[11px] leading-relaxed text-[#5C5348]">
+            <p className="text-[11px] leading-relaxed text-[#334155]">
               • 북서풍·저풍속 기상 조건과 겹치는 시간대에 서부권(대정읍·한림읍) 현장 포집 점검 및 원도심(일도1동·연동) 상업시간대 합동 순찰 배치가 권장됩니다.
             </p>
           </div>

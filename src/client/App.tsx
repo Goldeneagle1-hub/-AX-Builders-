@@ -13,7 +13,7 @@ export const App: React.FC = () => {
   return (
     <BrowserRouter>
       <CopilotProvider>
-        <div className="min-h-screen flex flex-col bg-[#FAF6EE]">
+        <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-900">
           {/* Top Portal Header + Desktop Full-Width Nav Bar */}
           <Header />
 
@@ -30,7 +30,7 @@ export const App: React.FC = () => {
           </main>
 
           {/* Subtle Small Footer Notice */}
-          <footer className="no-print pb-16 lg:pb-3 pt-1 px-4 text-center text-[11px] text-[#786D5F]">
+          <footer className="no-print pb-16 lg:pb-3 pt-1 px-4 text-center text-[11px] text-slate-500">
             공식 접수 대행 아님 · 작성 보조 전용 포털 | 임시 미디어(녹음·사진) 및 정밀 GPS는 메모리에만 보관되며 새로고침 시 초기화됩니다.
           </footer>
 

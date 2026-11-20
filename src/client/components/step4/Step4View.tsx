@@ -466,8 +466,8 @@ export const Step4View: React.FC = () => {
       )}
 
       {/* Repeating Evidence Log Card */}
-      <div className="no-print bg-[#FFFDF9] border border-[#E6DEC8] rounded-xl p-5 shadow-xs space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E6DEC8] pb-2.5">
+      <div className="no-print bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-5 shadow-xs space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E2E8F0] pb-2.5">
           <div className="flex items-center space-x-2">
             <CalendarPlus className="w-4 h-4 text-[#E86F1A]" />
             <h3 className="font-bold text-[#2E2A26] text-sm">
@@ -485,7 +485,7 @@ export const Step4View: React.FC = () => {
           )}
         </div>
 
-        <p className="text-xs text-[#5C5348]">
+        <p className="text-xs text-[#334155]">
           단순 계도에 그치지 않도록 반복 발생 일시와 피해 정황을 누적 기록하고, 재민원 시 민원서 본문에 한 번에 삽입할 수 있습니다.
         </p>
 
@@ -494,14 +494,14 @@ export const Step4View: React.FC = () => {
             type="datetime-local"
             value={logDate}
             onChange={(e) => setLogDate(e.target.value)}
-            className="sm:col-span-4 min-h-[44px] text-base sm:text-xs px-3 py-2 bg-white border border-[#E6DEC8] rounded-lg font-mono-num"
+            className="sm:col-span-4 min-h-[44px] text-base sm:text-xs px-3 py-2 bg-white border border-[#E2E8F0] rounded-lg font-mono-num"
           />
           <input
             type="text"
             value={logNote}
             onChange={(e) => setLogNote(e.target.value)}
             placeholder="예: 07:40 북서풍 유입, 투숙객 창문 개방 불가 항의"
-            className="sm:col-span-6 min-h-[44px] text-base sm:text-xs px-3 py-2 bg-white border border-[#E6DEC8] rounded-lg"
+            className="sm:col-span-6 min-h-[44px] text-base sm:text-xs px-3 py-2 bg-white border border-[#E2E8F0] rounded-lg"
           />
           <button
             type="button"
@@ -517,7 +517,7 @@ export const Step4View: React.FC = () => {
             {evidenceLogs.map((log) => (
               <li
                 key={log.id}
-                className="flex items-center justify-between gap-2 p-2.5 bg-white border border-[#E6DEC8] rounded-lg text-xs"
+                className="flex items-center justify-between gap-2 p-2.5 bg-white border border-[#E2E8F0] rounded-lg text-xs"
               >
                 <div className="min-w-0">
                   <span className="font-mono-num text-[11px] font-semibold text-[#E86F1A] mr-2">

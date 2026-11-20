@@ -107,12 +107,12 @@ export const Step3View: React.FC = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-11 gap-2 items-stretch text-xs">
                 {/* Province */}
-                <div className="lg:col-span-3 p-3 rounded-xl bg-[#FAF6EE] border border-[#E6DEC8] space-y-1">
-                  <div className="inline-block font-mono-num text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E6DEC8] text-[#5C5348]">
+                <div className="lg:col-span-3 p-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-1">
+                  <div className="inline-block font-mono-num text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E2E8F0] text-[#334155]">
                     TIER 01 · 도 본청
                   </div>
                   <div className="font-bold text-[#2E2A26] text-[11px]">총괄 정책·광역</div>
-                  <div className="text-[#5C5348] text-[11px] leading-snug">
+                  <div className="text-[#334155] text-[11px] leading-snug">
                     {issue.hierarchy.province}
                   </div>
                 </div>
@@ -123,7 +123,7 @@ export const Step3View: React.FC = () => {
                 </div>
 
                 {/* City (Primary Execution) */}
-                <div className="lg:col-span-3 p-3 rounded-xl bg-gradient-to-b from-[#FFFDF9] to-[#FDF2E4] border-2 border-[#E86F1A]/50 shadow-xs space-y-1">
+                <div className="lg:col-span-3 p-3 rounded-xl bg-gradient-to-b from-[#FFFFFF] to-[#FDF2E4] border-2 border-[#E86F1A]/50 shadow-xs space-y-1">
                   <div className="inline-block font-mono-num text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E86F1A] text-white">
                     TIER 02 · 행정시 (핵심)
                   </div>
@@ -139,12 +139,12 @@ export const Step3View: React.FC = () => {
                 </div>
 
                 {/* Community */}
-                <div className="lg:col-span-3 p-3 rounded-xl bg-[#FAF6EE] border border-[#E6DEC8] space-y-1">
-                  <div className="inline-block font-mono-num text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E6DEC8] text-[#5C5348]">
+                <div className="lg:col-span-3 p-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-1">
+                  <div className="inline-block font-mono-num text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E2E8F0] text-[#334155]">
                     TIER 03 · 읍·면·동
                   </div>
                   <div className="font-bold text-[#2E2A26] text-[11px]">주민센터 초동 확인</div>
-                  <div className="text-[#5C5348] text-[11px] leading-snug">
+                  <div className="text-[#334155] text-[11px] leading-snug">
                     {issue.hierarchy.community}
                   </div>
                 </div>

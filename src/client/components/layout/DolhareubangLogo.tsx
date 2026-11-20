@@ -33,11 +33,11 @@ export const DolhareubangLogo: React.FC<DolhareubangLogoProps> = ({
           <stop offset="100%" stopColor="#C4530A" />
         </linearGradient>
 
-        {/* Inner Cream-Beige Polished Backdrop */}
+        {/* Inner Crisp Bright White Polished Backdrop */}
         <radialGradient id={`bg-${uid}`} cx="38%" cy="28%" r="72%">
           <stop offset="0%" stopColor="#FFFFFF" />
-          <stop offset="65%" stopColor="#FAF4E8" />
-          <stop offset="100%" stopColor="#EAE0CD" />
+          <stop offset="70%" stopColor="#F8FAFC" />
+          <stop offset="100%" stopColor="#E2E8F0" />
         </radialGradient>
 
         {/* Sculpted Basalt Stone Body Gradient */}
@@ -74,7 +74,7 @@ export const DolhareubangLogo: React.FC<DolhareubangLogoProps> = ({
 
       {/* Outer Polished Badge Ring */}
       <circle cx="32" cy="32" r="30" fill={`url(#rim-${uid})`} filter={`url(#shadow-${uid})`} />
-      <circle cx="32" cy="32" r="27.2" fill={`url(#bg-${uid})`} stroke="#FFFDF9" strokeWidth="1.2" />
+      <circle cx="32" cy="32" r="27.2" fill={`url(#bg-${uid})`} stroke="#FFFFFF" strokeWidth="1.2" />
 
       {/* Soft Shadow beneath Dolhareubang */}
       <ellipse cx="32" cy="53.5" rx="14" ry="2.6" fill="#2E2A26" opacity="0.14" />
@@ -124,11 +124,11 @@ export const DolhareubangLogo: React.FC<DolhareubangLogoProps> = ({
       <circle cx="24" cy="44" r="0.7" fill="#7D7267" opacity="0.5" />
 
       {/* Friendly Expressive Eyes with Specular Dot */}
-      <circle cx="26" cy="31.5" r="3.2" fill="#FFFDF9" stroke="#1F1C18" strokeWidth="1.1" />
+      <circle cx="26" cy="31.5" r="3.2" fill="#FFFFFF" stroke="#1F1C18" strokeWidth="1.1" />
       <circle cx="26.3" cy="31.5" r="1.5" fill="#1F1C18" />
       <circle cx="27" cy="30.8" r="0.55" fill="#FFFFFF" />
 
-      <circle cx="38" cy="31.5" r="3.2" fill="#FFFDF9" stroke="#1F1C18" strokeWidth="1.1" />
+      <circle cx="38" cy="31.5" r="3.2" fill="#FFFFFF" stroke="#1F1C18" strokeWidth="1.1" />
       <circle cx="37.7" cy="31.5" r="1.5" fill="#1F1C18" />
       <circle cx="38.4" cy="30.8" r="0.55" fill="#FFFFFF" />
 
@@ -150,7 +150,7 @@ export const DolhareubangLogo: React.FC<DolhareubangLogoProps> = ({
       {/* Warm Gentle Smile */}
       <path
         d="M28 42.2 Q32 45 36 42.2"
-        stroke="#FAF4E8"
+        stroke="#F8FAFC"
         strokeWidth="1.5"
         strokeLinecap="round"
         fill="none"

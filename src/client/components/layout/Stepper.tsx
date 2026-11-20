@@ -23,7 +23,7 @@ export const Stepper: React.FC = () => {
   const currentStepObj = steps.find((s) => s.number === step) || steps[0];
 
   return (
-    <div className="no-print bg-[#FFFDF9] rounded-xl border border-[#E6DEC8] p-3 sm:p-4 mb-5 shadow-xs">
+    <div className="no-print bg-[#FFFFFF] rounded-xl border border-[#E2E8F0] p-3 sm:p-4 mb-5 shadow-xs">
       {/* Mobile Stepper: Compact single line with progress */}
       <div className="lg:hidden flex items-center justify-between">
         <div className="flex items-center space-x-2">
@@ -33,11 +33,11 @@ export const Stepper: React.FC = () => {
           <div>
             <div className="text-xs font-bold text-[#2E2A26] flex items-center space-x-1">
               <span>{currentStepObj.title}</span>
-              <span className="text-[#786D5F] font-mono-num text-[11px] font-normal">
+              <span className="text-[#475569] font-mono-num text-[11px] font-normal">
                 ({step}/4)
               </span>
             </div>
-            <p className="text-[10px] text-[#786D5F]">{currentStepObj.sub}</p>
+            <p className="text-[10px] text-[#475569]">{currentStepObj.sub}</p>
           </div>
         </div>
 
@@ -54,7 +54,7 @@ export const Stepper: React.FC = () => {
                   ? 'bg-[#E86F1A] text-white ring-2 ring-[#E86F1A]/30'
                   : canNavigateTo(s.number)
                   ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                  : 'bg-[#F3EDE0] text-[#9A8F80] cursor-not-allowed'
+                  : 'bg-[#F1F5F9] text-[#9A8F80] cursor-not-allowed'
               }`}
             >
               {canNavigateTo(s.number) && s.number < step ? (
@@ -87,8 +87,8 @@ export const Stepper: React.FC = () => {
                 isCurrent
                   ? 'bg-gradient-to-b from-[#3F3933] to-[#24201C] text-white shadow-[0_6px_14px_-4px_rgba(46,42,38,0.45),inset_0_1px_0_rgba(255,255,255,0.2)]'
                   : isAvailable
-                  ? 'bg-[#FAF6EE] hover:bg-[#F3EDE0] text-[#2E2A26] shadow-2xs'
-                  : 'bg-[#FAF6EE]/60 text-[#9A8F80] cursor-not-allowed'
+                  ? 'bg-[#F8FAFC] hover:bg-[#F1F5F9] text-[#2E2A26] shadow-2xs'
+                  : 'bg-[#F8FAFC]/60 text-[#9A8F80] cursor-not-allowed'
               }`}
             >
               <div
@@ -97,7 +97,7 @@ export const Stepper: React.FC = () => {
                     ? 'bg-gradient-to-b from-[#F27E2C] to-[#DC6310] text-white shadow-[0_2px_6px_rgba(232,111,26,0.5),inset_0_1px_0_rgba(255,255,255,0.35)]'
                     : isCompleted
                     ? 'bg-emerald-600 text-white shadow-2xs'
-                    : 'bg-[#E6DEC8] text-[#5C5348]'
+                    : 'bg-[#E2E8F0] text-[#334155]'
                 }`}
               >
                 {isCompleted ? <Check className="w-4 h-4" /> : s.number}
@@ -121,7 +121,7 @@ export const Stepper: React.FC = () => {
                 </div>
                 <div
                   className={`text-[11px] truncate ${
-                    isCurrent ? 'text-[#E6DEC8]' : 'text-[#786D5F]'
+                    isCurrent ? 'text-[#E2E8F0]' : 'text-[#475569]'
                   }`}
                 >
                   {s.sub}
