@@ -25,7 +25,7 @@ export const Header: React.FC = () => {
   const getPageTitle = () => {
     switch (location.pathname) {
       case '/':
-        return '제주 민원 코파일럿 작성';
+        return '제주민원메이트 작성';
       case '/stats':
         return '동네별 민원 통계 현황';
       case '/history':
@@ -33,7 +33,7 @@ export const Header: React.FC = () => {
       case '/ordinances':
         return '제주 자치법규·조례 카탈로그';
       default:
-        return '제주 민원 코파일럿';
+        return '제주민원메이트';
     }
   };
 

@@ -7,7 +7,7 @@ describe('End-to-End API Routes Verification (Live on Port 3000)', () => {
     const res = await fetch(`${BASE_URL}/`);
     expect(res.status).toBe(200);
     const html = await res.text();
-    expect(html).toContain('제주 민원 코파일럿');
+    expect(html).toContain('제주민원메이트');
   });
 
   it('GET /api/health returns server mode and status', async () => {

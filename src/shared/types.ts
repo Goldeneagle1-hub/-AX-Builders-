@@ -44,7 +44,7 @@ export interface WeatherInfo {
 
 export interface FacilityMatch {
   id: string;
-  category: '단속CCTV' | '보호구역' | '클린하우스' | '빗물받이' | '상권특성';
+  category: '단속CCTV' | '보호구역' | '클린하우스' | '공영주차장' | '빗물받이' | '상권특성';
   name: string;
   distanceMeter: number;
   radiusMeter: number;

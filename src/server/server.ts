@@ -55,7 +55,7 @@ async function startServer() {
 
   const server = app.listen(CONFIG.PORT, () => {
     console.log(
-      `[Jeju Civil Copilot] Server running on http://localhost:${CONFIG.PORT} (mode: ${CONFIG.APP_MODE})`
+      `[Jeju Minwon Mate] Server running on http://localhost:${CONFIG.PORT} (mode: ${CONFIG.APP_MODE})`
     );
   });
 

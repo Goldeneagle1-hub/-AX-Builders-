@@ -113,7 +113,7 @@ export const WeatherInfoSchema = z.object({
 
 export const FacilityMatchSchema = z.object({
   id: z.string(),
-  category: z.enum(['단속CCTV', '보호구역', '클린하우스', '빗물받이', '상권특성']),
+  category: z.enum(['단속CCTV', '보호구역', '클린하우스', '공영주차장', '빗물받이', '상권특성']),
   name: z.string(),
   distanceMeter: z.number(),
   radiusMeter: z.number(),

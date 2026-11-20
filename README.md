@@ -1,4 +1,4 @@
-# 제주 민원 코파일럿 (Jeju Civil Complaint Copilot)
+# 제주민원메이트 (Jeju Minwon Mate)
 
 > **소상공인·도민 생활·영업 피해 행정 민원 작성 및 법규·관할 연계 보조 풀스택 웹 애플리케이션**
 

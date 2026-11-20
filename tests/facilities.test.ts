@@ -23,4 +23,10 @@ describe('GPS Haversine Distance & Jeju Facility Matching', () => {
     expect(matches.length).toBeGreaterThan(0);
     expect(matches[0].name).toContain('성산');
   });
+
+  it('includes public parking lots (공영주차장) in Ildo1-dong matches', () => {
+    const matches = matchFacilities('일도1동', { lat: 33.5132, lng: 126.5269 });
+    const hasParkingLot = matches.some((m) => m.category === '공영주차장');
+    expect(hasParkingLot).toBe(true);
+  });
 });

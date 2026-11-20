@@ -110,7 +110,7 @@ export async function chatIntakeReply(
   // Live mode
   try {
     const ai = getGenAI();
-    const systemInstruction = `당신은 제주도 소상공인과 도민을 위한 '제주 민원 코파일럿' 상담관입니다.
+    const systemInstruction = `당신은 제주도 소상공인과 도민을 위한 '제주민원메이트' 상담관입니다.
 사용자가 구어체로 겪고 있는 생활·영업 피해를 경청하고, 공무원이 행정 조치를 취할 수 있도록 필수 정보(행정시, 읍·면·동, 발생 일시, 피해 내용, 요청사항)를 1~2개의 정중한 질문으로 유도하세요.
 답변은 친절하고 간결하며 공감 어린 어조로 작성하세요.`;
 
@@ -445,7 +445,7 @@ ${issueRoutings}
 위와 같이 생활 및 영업 피해 사실을 진술하오니, 관할 행정청의 신속하고 면밀한 현장 점검과 처리를 정중히 요청드립니다.
 
 신청일자: ${new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
-신청인(대리작성 보조): 제주 민원 코파일럿 (작성인 검토 완료)`;
+신청인(대리작성 보조): 제주민원메이트 (작성인 검토 완료)`;
 
   const rewrites: RewriteCandidate[] =
     intakeRewrites && intakeRewrites.length > 0

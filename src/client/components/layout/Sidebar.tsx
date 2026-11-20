@@ -43,10 +43,10 @@ export const Sidebar: React.FC = () => {
           <DolhareubangLogo size={44} className="shrink-0 drop-shadow-xs" />
           <div>
             <h1 className="font-bold text-base tracking-tight leading-none text-[#2E2A26]">
-              제주 민원 코파일럿
+              제주민원메이트
             </h1>
             <p className="text-[11px] text-[#786D5F] mt-1 font-mono-num">
-              Jeju Civil Copilot
+              Jeju Minwon Mate
             </p>
           </div>
         </div>
