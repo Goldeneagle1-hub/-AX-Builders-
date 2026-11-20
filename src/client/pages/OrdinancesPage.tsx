@@ -57,7 +57,7 @@ export const OrdinancesPage: React.FC = () => {
     addCitedOrdinance(id);
     setStep(1);
     setStep1Tab('direct');
-    navigate('/');
+    navigate('/write');
   };
 
   return (

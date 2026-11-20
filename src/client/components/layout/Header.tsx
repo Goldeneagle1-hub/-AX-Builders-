@@ -25,7 +25,7 @@ export const Header: React.FC = () => {
   const userSavedCount = savedComplaints.filter((c) => c.source === 'user').length;
 
   const navItems = [
-    { to: '/', label: '새 민원 작성', icon: FileEdit, badge: null },
+    { to: '/write', label: '새 민원 작성', icon: FileEdit, badge: null },
     { to: '/stats', label: '동네별 민원 통계', icon: BarChart3, badge: `${savedComplaints.length}건` },
     { to: '/history', label: '민원 이력', icon: Clock, badge: userSavedCount > 0 ? `${userSavedCount}건` : null },
     { to: '/ordinances', label: '조례·법령 검색', icon: Scale, badge: citedOrdinanceIds.length > 0 ? `인용 ${citedOrdinanceIds.length}` : null },
@@ -88,7 +88,7 @@ export const Header: React.FC = () => {
             </span>
           </div>
 
-          {location.pathname === '/' && (
+          {location.pathname === '/write' && (
             <button
               onClick={() => {
                 if (window.confirm('작성 중인 모든 입력값을 초기화하시겠습니까?')) {

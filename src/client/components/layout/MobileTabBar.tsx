@@ -9,7 +9,7 @@ export const MobileTabBar: React.FC = () => {
 
   const tabs = [
     {
-      to: '/',
+      to: '/write',
       label: '작성',
       icon: FileEdit,
       badge: null,
