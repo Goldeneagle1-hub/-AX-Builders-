@@ -475,32 +475,29 @@ export const DirectInput: React.FC = () => {
             </span>
           </div>
 
-          {/* 6W Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-            <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <span className="font-bold text-[#2E2A26] block mb-0.5">누가 (신청인/피해자)</span>
-              <p className="text-slate-700">{intakeResult.sixW.who}</p>
-            </div>
-            <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <span className="font-bold text-[#2E2A26] block mb-0.5">언제 (발생일시)</span>
-              <p className="text-slate-700">{intakeResult.sixW.when}</p>
-            </div>
-            <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <span className="font-bold text-[#2E2A26] block mb-0.5">어디서 (발생위치)</span>
-              <p className="text-slate-700">{intakeResult.sixW.where}</p>
-            </div>
-            <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <span className="font-bold text-[#2E2A26] block mb-0.5">무엇을 (피해현황)</span>
-              <p className="text-slate-700">{intakeResult.sixW.what}</p>
-            </div>
-            <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <span className="font-bold text-[#2E2A26] block mb-0.5">어떻게 (발생경위)</span>
-              <p className="text-slate-700">{intakeResult.sixW.how}</p>
-            </div>
-            <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
-              <span className="font-bold text-[#2E2A26] block mb-0.5">왜 (원인 및 배경)</span>
-              <p className="text-slate-700">{intakeResult.sixW.why}</p>
-            </div>
+          {/* 6W Infographic Matrix */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
+            {[
+              { tag: '01 WHO', label: '누가 (신청인/피해자)', val: intakeResult.sixW.who },
+              { tag: '02 WHEN', label: '언제 (발생일시)', val: intakeResult.sixW.when },
+              { tag: '03 WHERE', label: '어디서 (발생위치)', val: intakeResult.sixW.where },
+              { tag: '04 WHAT', label: '무엇을 (피해현황)', val: intakeResult.sixW.what },
+              { tag: '05 HOW', label: '어떻게 (발생경위)', val: intakeResult.sixW.how },
+              { tag: '06 WHY', label: '왜 (원인 및 배경)', val: intakeResult.sixW.why },
+            ].map((item) => (
+              <div
+                key={item.tag}
+                className="p-3 rounded-xl bg-gradient-to-b from-[#FFFDF9] to-[#FAF4E8] border border-[#E6DEC8] shadow-[0_2px_8px_-2px_rgba(46,42,38,0.05),inset_0_1px_0_rgba(255,255,255,0.9)] space-y-1"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono-num text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E86F1A]/15 text-[#C9580C]">
+                    {item.tag}
+                  </span>
+                  <span className="font-bold text-[#2E2A26] text-[11px]">{item.label}</span>
+                </div>
+                <p className="text-[#5C5348] text-xs leading-relaxed pt-0.5">{item.val}</p>
+              </div>
+            ))}
           </div>
 
           {/* Photo Observations */}

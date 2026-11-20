@@ -1,5 +1,6 @@
 import React from 'react';
 import { useCopilot } from '../context/CopilotContext';
+import { InfographicHero } from '../components/layout/InfographicHero';
 import { Stepper } from '../components/layout/Stepper';
 import { Step1View } from '../components/step1/Step1View';
 import { Step2View } from '../components/step2/Step2View';
@@ -11,6 +12,9 @@ export const CopilotPage: React.FC = () => {
 
   return (
     <div className="space-y-4 max-w-5xl mx-auto pb-12">
+      {/* Top Infographic Overview Strip */}
+      <InfographicHero />
+
       {/* 4-Step Progress Stepper */}
       <Stepper />
 

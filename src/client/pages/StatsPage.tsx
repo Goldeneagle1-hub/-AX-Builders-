@@ -220,7 +220,7 @@ export const StatsPage: React.FC = () => {
           </div>
 
           <div className="space-y-3">
-            {districtCounts.map(([distName, info]) => {
+            {districtCounts.map(([distName, info], idx) => {
               const pct = Math.round((info.count / maxDistrictCount) * 100);
               const mainCats = Object.keys(info.categories).join(', ');
               const isRepeatHotspot = info.count >= 2;
@@ -228,6 +228,17 @@ export const StatsPage: React.FC = () => {
                 <div key={distName} className="space-y-1">
                   <div className="flex items-center justify-between gap-2 text-xs">
                     <div className="flex items-center space-x-1.5 min-w-0">
+                      <span
+                        className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold font-mono-num shrink-0 ${
+                          idx === 0
+                            ? 'bg-[#E86F1A] text-white'
+                            : idx === 1
+                            ? 'bg-[#2E2A26] text-white'
+                            : 'bg-[#E6DEC8] text-[#5C5348]'
+                        }`}
+                      >
+                        {idx + 1}
+                      </span>
                       <span className="font-bold text-slate-800 truncate">
                         {info.city} {distName}
                       </span>
@@ -242,10 +253,12 @@ export const StatsPage: React.FC = () => {
                       {info.count}건 ({mainCats})
                     </span>
                   </div>
-                  <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                  <div className="w-full bg-[#F3EDE0] rounded-full h-3 overflow-hidden shadow-inner">
                     <div
                       className={`h-3 rounded-full transition-all duration-500 ${
-                        isRepeatHotspot ? 'bg-[#E86F1A]' : 'bg-[#2E2A26]'
+                        isRepeatHotspot
+                          ? 'bg-gradient-to-r from-[#E86F1A] to-[#F59245]'
+                          : 'bg-gradient-to-r from-[#2E2A26] to-[#574F47]'
                       }`}
                       style={{ width: `${Math.max(pct, 12)}%` }}
                     ></div>
@@ -256,13 +269,13 @@ export const StatsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* 2. Category Share Breakdown */}
+        {/* 2. Category Share Breakdown with SVG Donut Infographic */}
         <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-4">
           <div className="flex items-center justify-between border-b pb-2.5">
             <div className="flex items-center space-x-2">
               <PieChart className="w-4 h-4 text-[#E86F1A]" />
               <h3 className="font-bold text-slate-900 text-sm">
-                분야별 민원 비중 및 누적 건수
+                분야별 민원 비중 인포그래픽
               </h3>
             </div>
             <span className="text-[11px] text-slate-500 font-mono-num">
@@ -270,26 +283,70 @@ export const StatsPage: React.FC = () => {
             </span>
           </div>
 
-          <div className="space-y-3">
-            {categoryCounts.map(([catName, count]) => {
-              const pct = Math.round((count / (totalCount || 1)) * 100);
-              return (
-                <div key={catName} className="space-y-1">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-slate-800">{catName}</span>
-                    <span className="text-slate-500 font-mono-num text-[11px]">
-                      {count}건 ({pct}%)
-                    </span>
+          <div className="flex flex-col sm:flex-row items-center gap-5">
+            {/* SVG Donut Chart */}
+            <div className="relative w-36 h-36 shrink-0 flex items-center justify-center">
+              <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#F3EDE0" strokeWidth="14" />
+                {(() => {
+                  const palette = ['#E86F1A', '#2E2A26', '#C98A2C', '#5B7A5E', '#8C7A6B'];
+                  const circumference = 2 * Math.PI * 38;
+                  let offset = 0;
+                  return categoryCounts.map(([catName, count], i) => {
+                    const ratio = count / (totalCount || 1);
+                    const dash = ratio * circumference;
+                    const seg = (
+                      <circle
+                        key={catName}
+                        cx="50"
+                        cy="50"
+                        r="38"
+                        fill="none"
+                        stroke={palette[i % palette.length]}
+                        strokeWidth="14"
+                        strokeDasharray={`${dash} ${circumference - dash}`}
+                        strokeDashoffset={-offset}
+                      />
+                    );
+                    offset += dash;
+                    return seg;
+                  });
+                })()}
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                <span className="text-[10px] text-[#786D5F] font-semibold">총 누적</span>
+                <span className="text-lg font-extrabold text-[#2E2A26] font-mono-num leading-none">
+                  {totalCount}건
+                </span>
+              </div>
+            </div>
+
+            {/* Category Legend Bars */}
+            <div className="flex-1 w-full space-y-2.5">
+              {categoryCounts.map(([catName, count], i) => {
+                const palette = ['bg-[#E86F1A]', 'bg-[#2E2A26]', 'bg-[#C98A2C]', 'bg-[#5B7A5E]', 'bg-[#8C7A6B]'];
+                const pct = Math.round((count / (totalCount || 1)) * 100);
+                return (
+                  <div key={catName} className="space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center space-x-1.5">
+                        <span className={`w-2.5 h-2.5 rounded-xs ${palette[i % palette.length]}`} />
+                        <span className="font-semibold text-slate-800">{catName}</span>
+                      </div>
+                      <span className="text-slate-500 font-mono-num text-[11px]">
+                        {count}건 ({pct}%)
+                      </span>
+                    </div>
+                    <div className="w-full bg-[#F3EDE0] rounded-full h-2 overflow-hidden">
+                      <div
+                        className={`${palette[i % palette.length]} h-2 rounded-full transition-all duration-500`}
+                        style={{ width: `${Math.max(pct, 10)}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
-                    <div
-                      className="bg-[#E86F1A] h-3 rounded-full transition-all duration-500"
-                      style={{ width: `${Math.max(pct, 10)}%` }}
-                    ></div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

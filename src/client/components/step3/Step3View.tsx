@@ -98,40 +98,53 @@ export const Step3View: React.FC = () => {
               </div>
             </div>
 
-            {/* 3-Tier Hierarchy (Mobile: Stacked Cards / Desktop: 3-column Grid) */}
-            <div className="space-y-1.5">
-              <span className="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
-                <Building className="w-4 h-4 text-[#2E2A26]" />
-                <span>제주특별자치도 3계층 행정 분장 구조</span>
+            {/* 3-Tier Hierarchy Infographic Flow Diagram */}
+            <div className="space-y-2">
+              <span className="text-xs font-bold text-[#2E2A26] flex items-center space-x-1.5">
+                <Building className="w-4 h-4 text-[#E86F1A]" />
+                <span>제주특별자치도 3계층 행정 분장 인포그래픽</span>
               </span>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 text-xs">
+              <div className="grid grid-cols-1 lg:grid-cols-11 gap-2 items-stretch text-xs">
                 {/* Province */}
-                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 space-y-0.5">
-                  <div className="font-bold text-slate-700 text-[11px]">
-                    1. 제주도 본청 (총괄)
+                <div className="lg:col-span-3 p-3 rounded-xl bg-[#FAF6EE] border border-[#E6DEC8] space-y-1">
+                  <div className="inline-block font-mono-num text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E6DEC8] text-[#5C5348]">
+                    TIER 01 · 도 본청
                   </div>
-                  <div className="text-slate-600 text-[11px]">
+                  <div className="font-bold text-[#2E2A26] text-[11px]">총괄 정책·광역</div>
+                  <div className="text-[#5C5348] text-[11px] leading-snug">
                     {issue.hierarchy.province}
                   </div>
                 </div>
 
-                {/* City */}
-                <div className="p-2.5 rounded-lg bg-[#2E2A26]/5 border border-[#2E2A26]/20 space-y-0.5">
-                  <div className="font-bold text-[#2E2A26] text-[11px]">
-                    2. 행정시 (지도·점검·단속 집행)
+                <div className="flex items-center justify-center text-[#E86F1A] font-bold text-sm lg:col-span-1">
+                  <span className="lg:hidden">↓</span>
+                  <span className="hidden lg:inline">→</span>
+                </div>
+
+                {/* City (Primary Execution) */}
+                <div className="lg:col-span-3 p-3 rounded-xl bg-gradient-to-b from-[#FFFDF9] to-[#FDF2E4] border-2 border-[#E86F1A]/50 shadow-xs space-y-1">
+                  <div className="inline-block font-mono-num text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E86F1A] text-white">
+                    TIER 02 · 행정시 (핵심)
                   </div>
-                  <div className="text-slate-800 text-[11px] font-medium">
+                  <div className="font-bold text-[#2E2A26] text-[11px]">지도·점검·단속 집행</div>
+                  <div className="text-[#2E2A26] text-[11px] font-semibold leading-snug">
                     {issue.hierarchy.city}
                   </div>
                 </div>
 
+                <div className="flex items-center justify-center text-[#E86F1A] font-bold text-sm lg:col-span-1">
+                  <span className="lg:hidden">↓</span>
+                  <span className="hidden lg:inline">→</span>
+                </div>
+
                 {/* Community */}
-                <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 space-y-0.5">
-                  <div className="font-bold text-slate-700 text-[11px]">
-                    3. 읍·면·동 주민센터 (초동 접수)
+                <div className="lg:col-span-3 p-3 rounded-xl bg-[#FAF6EE] border border-[#E6DEC8] space-y-1">
+                  <div className="inline-block font-mono-num text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E6DEC8] text-[#5C5348]">
+                    TIER 03 · 읍·면·동
                   </div>
-                  <div className="text-slate-600 text-[11px]">
+                  <div className="font-bold text-[#2E2A26] text-[11px]">주민센터 초동 확인</div>
+                  <div className="text-[#5C5348] text-[11px] leading-snug">
                     {issue.hierarchy.community}
                   </div>
                 </div>
