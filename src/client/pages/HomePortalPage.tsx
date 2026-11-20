@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, Type } from 'lucide-react';
 import { useCopilot } from '../context/CopilotContext';
 import { JEJU_DISTRICTS } from '@shared/jurisdictions';
+import { DolhareubangLogo } from '../components/layout/DolhareubangLogo';
 
 export const HomePortalPage: React.FC = () => {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ export const HomePortalPage: React.FC = () => {
     savedComplaints,
     citedOrdinanceIds,
     markInputsDirty,
+    largeFont,
+    toggleLargeFont,
   } = useCopilot();
 
   const userSavedCount = savedComplaints.filter((c) => c.source === 'user').length;
@@ -103,7 +106,7 @@ export const HomePortalPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-195px)] flex flex-col justify-center">
+    <div className="min-h-[calc(100vh-84px)] flex flex-col justify-center">
       {/* Full-Viewport SEMAS-Style 4-Column + Right Map Portal */}
       <section className="rounded-2xl overflow-hidden border border-[#DFD5BC] shadow-[0_18px_45px_-15px_rgba(46,42,38,0.22)] bg-[#FFFDF9] flex-1 flex flex-col">
         <div className="grid grid-cols-1 lg:grid-cols-12 flex-1">
@@ -152,9 +155,37 @@ export const HomePortalPage: React.FC = () => {
             ))}
           </div>
 
-          {/* Right 4 cols: Interactive Jeju Jurisdiction Map + Quick Demo Presets + Call-Center Bar */}
+          {/* Right 4 cols: Brand Header + Interactive Jeju Jurisdiction Map + Quick Demo Presets + Call-Center Bar */}
           <div className="lg:col-span-4 flex flex-col justify-between bg-gradient-to-b from-[#F7F3EA] to-[#EAE2D3] border-t lg:border-t-0 lg:border-l border-[#DFD5BC]">
-            <div className="p-6 flex-1 flex flex-col items-center justify-between gap-4">
+            {/* Compact Integrated Brand Strip */}
+            <div className="px-5 py-3.5 border-b border-[#DFD5BC] bg-[#FFFDF9]/75 flex items-center justify-between gap-2">
+              <div className="flex items-center space-x-2.5 min-w-0">
+                <DolhareubangLogo size={36} className="shrink-0" />
+                <div className="min-w-0">
+                  <h1 className="text-sm font-extrabold text-[#2E2A26] tracking-tight truncate">
+                    제주민원메이트
+                  </h1>
+                  <p className="text-[10px] text-[#786D5F] font-mono-num truncate">
+                    Jeju Minwon Mate
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={toggleLargeFont}
+                aria-pressed={largeFont}
+                className={`min-h-[32px] px-2.5 py-1 rounded-lg border text-[11px] font-semibold flex items-center space-x-1 transition-colors cursor-pointer shrink-0 ${
+                  largeFont
+                    ? 'bg-[#E86F1A] border-[#E86F1A] text-white'
+                    : 'bg-white border-[#E6DEC8] text-[#5C5348] hover:bg-[#F3EDE0]'
+                }`}
+              >
+                <Type className="w-3 h-3" />
+                <span>{largeFont ? '큰 글씨' : '글자크기'}</span>
+              </button>
+            </div>
+
+            <div className="p-5 flex-1 flex flex-col items-center justify-between gap-3">
               <div className="text-center space-y-1">
                 <h3 className="text-base font-extrabold text-[#2E2A26]">
                   제주특별자치도 민원 관할 지도

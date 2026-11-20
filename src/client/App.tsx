@@ -18,7 +18,7 @@ export const App: React.FC = () => {
           <Header />
 
           {/* Main Full-Width Portal Workspace */}
-          <main className="flex-1 p-3 sm:p-5 lg:p-6 pb-24 lg:pb-10 max-w-7xl w-full mx-auto">
+          <main className="flex-1 p-3 sm:p-5 lg:p-6 pb-20 lg:pb-4 max-w-7xl w-full mx-auto">
             <Routes>
               <Route path="/" element={<HomePortalPage />} />
               <Route path="/write" element={<CopilotPage />} />
@@ -28,6 +28,11 @@ export const App: React.FC = () => {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
+
+          {/* Subtle Small Footer Notice */}
+          <footer className="no-print pb-16 lg:pb-3 pt-1 px-4 text-center text-[11px] text-[#786D5F]">
+            공식 접수 대행 아님 · 작성 보조 전용 포털 | 임시 미디어(녹음·사진) 및 정밀 GPS는 메모리에만 보관되며 새로고침 시 초기화됩니다.
+          </footer>
 
           {/* Mobile Fixed Safe Area 4-Tab Bar */}
           <MobileTabBar />
